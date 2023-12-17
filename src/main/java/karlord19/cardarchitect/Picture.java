@@ -1,9 +1,6 @@
 package karlord19.cardarchitect;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -41,13 +38,13 @@ public class Picture implements Drawable {
         this.pictures = new_pictures;
     }
     
-    public void draw(int x, int y, int width, int height, int index, PDDocument document, PDPageContentStream contentStream) {
-        System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + x + ", " + y + ", " + width + ", " + height);
+    public void draw(PositionedArea pa, int index, PDFManager pdf) {
+        System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + pa);
         try {
-            PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), document);
-            contentStream.drawImage(image, x, y, width, height);
+            PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), pdf.getDocument());
+            pdf.getContentStream().drawImage(image, pa.pos.x, pa.pos.y, pa.area.width, pa.area.height);
         } catch (IOException e) {
-            System.out.println("Failed to render picture " + pictures[index].getName() + " at index " + index + " to " + x + ", " + y + ", " + width + ", " + height);
+            System.out.println("Failed to render picture " + pictures[index].getName() + " at index " + index + " to " + pa);
             e.printStackTrace();
         }
     }
