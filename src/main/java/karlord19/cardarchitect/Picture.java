@@ -1,7 +1,6 @@
 package karlord19.cardarchitect;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
@@ -16,7 +15,7 @@ import java.io.File;
  * 
  * A class that represents a collection of pictures on one spot.
  */
-public class Picture {
+public class Picture implements Drawable {
 
     private File[] pictures;
 
@@ -42,29 +41,14 @@ public class Picture {
         this.pictures = new_pictures;
     }
     
-    /**
-     * Render the picture at the given index onto a PDF at the specified position and size.
-     * 
-     * @param x      The x-coordinate of the top-left corner of the rendered picture.
-     * @param y      The y-coordinate of the top-left corner of the rendered picture.
-     * @param width  The width of the rendered picture.
-     * @param height The height of the rendered picture.
-     * @param index  The index of the picture to render.
-     * @param pdfPath The path to the PDF file to generate.
-     */
-    public void render(int x, int y, int width, int height, int index, String pdfPath) throws IOException {
-        System.out.println("Rendering picture " + index + " to " + pdfPath);
-        
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
-
-        PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), document);
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        contentStream.drawImage(image, x, y, width, height);
-        contentStream.close();
-
-        document.save(pdfPath);
-        document.close();
+    public void draw(int x, int y, int width, int height, int index, PDDocument document, PDPageContentStream contentStream) {
+        System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + x + ", " + y + ", " + width + ", " + height);
+        try {
+            PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), document);
+            contentStream.drawImage(image, x, y, width, height);
+        } catch (IOException e) {
+            System.out.println("Failed to render picture " + pictures[index].getName() + " at index " + index + " to " + x + ", " + y + ", " + width + ", " + height);
+            e.printStackTrace();
+        }
     }
 }
