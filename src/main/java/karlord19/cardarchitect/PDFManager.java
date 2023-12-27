@@ -3,35 +3,39 @@ package karlord19.cardarchitect;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.util.Matrix;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 public class PDFManager {
     private PDDocument document;
     private PDPageContentStream contentStream;
     private String file;
-    private Area pageArea;
-    public PDFManager(String path) {
-        this.file = path;
-        this.document = new PDDocument();
+    private PositionedArea printArea;
+    private float[] margins;
+    public PDFManager(String path, float[] margins) {
+        file = path;
+        document = new PDDocument();
+        this.margins = margins;
     }
     public void addPage() throws Exception {
         PDPage page = new PDPage(PDRectangle.A4);
-        this.document.addPage(page);
-        pageArea = new Area((int)page.getMediaBox().getWidth(), (int)page.getMediaBox().getHeight());
-        this.contentStream = new PDPageContentStream(this.document, page);
+        document.addPage(page);
+        printArea = new PositionedArea(margins[3], margins[0], page.getMediaBox().getWidth() - margins[3] - margins[1], page.getMediaBox().getHeight() - margins[0] - margins[2]);
+        contentStream = new PDPageContentStream(document, page);
+        contentStream.transform(new Matrix(1, 0, 0, -1, 0, page.getMediaBox().getHeight()));
     }
     public void close() throws Exception {
-        this.contentStream.close();
-        this.document.save(this.file);
-        this.document.close();
+        contentStream.close();
+        document.save(file);
+        document.close();
     }
     public PDDocument getDocument() {
-        return this.document;
+        return document;
     }
     public PDPageContentStream getContentStream() {
-        return this.contentStream;
+        return contentStream;
     }
-    public Area getPageArea() {
-        return this.pageArea;
+    public PositionedArea getPrintPA() {
+        return printArea;
     }
 }

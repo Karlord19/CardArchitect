@@ -14,7 +14,7 @@ public class PositionedArea {
         this.area = area;
         this.pos = pos;
     }
-    public PositionedArea(int x, int y, int width, int height) {
+    public PositionedArea(float x, float y, float width, float height) {
         this.area = new Area(width, height);
         this.pos = new Position(x, y);
     }

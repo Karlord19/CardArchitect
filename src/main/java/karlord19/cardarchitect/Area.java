@@ -1,11 +1,11 @@
 package karlord19.cardarchitect;
 
 public class Area {
-    public int width, height;
+    public float width, height;
     public String toString() {
         return "area: (" + width + ", " + height + ")";
     }
-    public Area(int width, int height) {
+    public Area(float width, float height) {
         this.width = width;
         this.height = height;
     }

@@ -39,6 +39,7 @@ public class Picture implements Drawable {
     }
     
     public void draw(PositionedArea pa, int index, PDFManager pdf) {
+        index = index % pictures.length;
         System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + pa);
         try {
             PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), pdf.getDocument());
