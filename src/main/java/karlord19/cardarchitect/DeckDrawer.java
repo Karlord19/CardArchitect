@@ -2,18 +2,15 @@ package karlord19.cardarchitect;
 
 public class DeckDrawer {
     private float[] margins; // top, right, bottom, left
-    private void setMargins(int[] margins) {
-        if (margins.length != 4) {
-            System.err.println("Margins must be an array of 4 ints.");
-            return;
-        }
-        this.margins = Metrics.m2p(margins);
+    private void setMargins(int top, int right, int bottom, int left) {
+        margins = Metrics.m2p(new int[] { top, right, bottom, left });
     }
+    // use default 5000 margins
     public DeckDrawer() {
-        setMargins(new int[] { 5000, 5000, 5000, 5000 });
+        setMargins(5000, 5000, 5000, 5000);
     }
-    public DeckDrawer(int[] margins) {
-        setMargins(margins);
+    public DeckDrawer(int top, int right, int bottom, int left) {
+        setMargins(top, right, bottom, left);
     }
     private PDFManager drawDeckBefore(String pdfPath) {
         PDFManager pdf = new PDFManager(pdfPath, margins);
@@ -37,6 +34,9 @@ public class DeckDrawer {
     }
     public void drawDeck(Card card, String pdfPath) {
         PDFManager pdf = drawDeckBefore(pdfPath);
+        if (pdf == null) {
+            return;
+        }
         float cardWidth = card.getWidth();
         float cardHeight = card.getHeight();
         int cardsInRow = (int)(pdf.getPrintPA().area.width / cardWidth);
@@ -50,7 +50,7 @@ public class DeckDrawer {
                     pdf.getPrintPA().pos.y + i * (cardHeight + columnSpace),
                     cardWidth,
                     cardHeight);
-                card.draw(pa, i * cardsInColumn + cardsInRow, pdf);
+                card.draw(pa, i * cardsInColumn + j, pdf);
             }
         }
         drawDeckAfter(pdf);

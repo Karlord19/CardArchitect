@@ -20,12 +20,11 @@ public class Picture implements Drawable {
         this.pictures = new File[0];
     }
 
-    public void add_picture(String path) {
+    public void addPicture(String path) {
         System.out.println("Will add picture " + path);
-        URL url;
         Path real_path;
         try {
-            url = getClass().getResource(path);
+            URL url = getClass().getResource(path);
             real_path = Paths.get(url.toURI());
         } catch (Exception e) {
             System.out.println("Failed to get path to picture.");
@@ -37,16 +36,40 @@ public class Picture implements Drawable {
         new_pictures[this.pictures.length] = real_path.toFile();
         this.pictures = new_pictures;
     }
+
+    public void addPictures(String dirPath, String regex) {
+        System.out.println("Will add pictures from " + dirPath + " with regex " + regex);
+        File dir;
+        try {
+            URL url = getClass().getResource(dirPath);
+            dir = new File(url.toURI());
+        } catch (Exception e) {
+            System.out.println("Failed to get path to directory.");
+            e.printStackTrace();
+            return;
+        }
+        File[] dirFiles = dir.listFiles();
+        File[] newPictures = new File[this.pictures.length + dirFiles.length];
+        System.arraycopy(this.pictures, 0, newPictures, 0, this.pictures.length);
+        int i = this.pictures.length;
+        for (File file : dir.listFiles()) {
+            if (file.getName().matches(regex)) {
+                newPictures[i] = file;
+                i++;
+            }
+        }
+        File[] croppedPictures = new File[i];
+        System.arraycopy(newPictures, 0, croppedPictures, 0, i);
+        this.pictures = croppedPictures;
+    }
     
     public void draw(PositionedArea pa, int index, PDFManager pdf) {
+        if (pictures.length == 0) {
+            System.out.println("No pictures to draw.");
+            return;
+        }
         index = index % pictures.length;
         System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + pa);
-        try {
-            PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), pdf.getDocument());
-            pdf.getContentStream().drawImage(image, pa.pos.x, pa.pos.y, pa.area.width, pa.area.height);
-        } catch (IOException e) {
-            System.out.println("Failed to render picture " + pictures[index].getName() + " at index " + index + " to " + pa);
-            e.printStackTrace();
-        }
+        pdf.drawImage(pictures[index], pa);
     }
 }
