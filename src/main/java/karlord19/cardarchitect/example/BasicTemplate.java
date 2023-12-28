@@ -5,6 +5,7 @@ import karlord19.cardarchitect.Picture;
 import karlord19.cardarchitect.Text;
 import karlord19.cardarchitect.Card;
 import karlord19.cardarchitect.Fit;
+import org.apache.pdfbox.pdmodel.font.*;
 
 /**
  * BasicTemplate
@@ -16,21 +17,30 @@ public class BasicTemplate {
         card.setWidthsEqual(55000);
         card.setHeights(new int[] { 10000, 20000, 30000 });
 
-        Text textTL = new Text("Top Left");
+        Text textTL = new Text("Áop Left");
         card.add(textTL, "TL", 0, 0, 0, 1);
         
-        Picture pictureTR = new Picture();
-        pictureTR.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
-        card.add(pictureTR, "TR", 0, 2, 1, 2);
-        
-        Fit fitTW = new Fit();
-        fitTW.setFitType(Fit.FitType.FIT_WIDTH);
-        fitTW.setFitPositionY(Fit.FitPositionY.TOP);
+        // Picture pictureTR = new Picture();
+        // pictureTR.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
+        // card.add(pictureTR, "TR", 0, 2, 1, 2);
 
-        Picture pictureBL = new Picture();
-        pictureBL.addPictures("example/BasicTemplate/pics/", "blue[0-9]{2}[.]png");
-        pictureBL.setFit(fitTW);
-        card.add(pictureBL, "MM", 1, 0, 2, 1);
+        Text textTR = new Text("moc moc\nmoc textu");
+        textTR.setType(Text.Type.MultiLine);
+        card.add(textTR, "TR", 0, 2, 1, 2);
+        
+        // Fit fitTW = new Fit();
+        // fitTW.setFitType(Fit.FitType.FIT_WIDTH);
+        // fitTW.setFitPositionY(Fit.FitPositionY.TOP);
+
+        // Picture pictureBL = new Picture();
+        // pictureBL.addPictures("example/BasicTemplate/pics/", "blue[0-9]{2}[.]png");
+        // pictureBL.setFit(fitTW);
+        // card.add(pictureBL, "MM", 1, 0, 2, 1);
+
+        Text textBL = new Text("a a a a a a a a a a a a a a a a a a a megamocmocdlouheslovozesetamurcitenevejde a a a a a a a a a a a a a a a a a");
+        textBL.setType(Text.Type.Crop);
+        textBL.setFont(PDType1Font.HELVETICA, 10);
+        card.add(textBL, "BL", 1, 0, 2, 1);
 
         Fit fitMH = new Fit();
         fitMH.setFitType(Fit.FitType.FIT_HEIGHT);

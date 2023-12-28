@@ -6,6 +6,12 @@ public class Text implements Drawable {
     private String[] texts;
     private PDFont font = PDType1Font.HELVETICA;
     private int size = 30;
+    public enum Type {
+        OneLine,
+        MultiLine,
+        Crop
+    }
+    private Type type = Type.OneLine;
     public Text(String text) {
         texts = new String[] { text };
     }
@@ -14,6 +20,9 @@ public class Text implements Drawable {
     }
     public Text() {
         texts = new String[] {};
+    }
+    public void setType(Type type) {
+        this.type = type;
     }
     public void addText(String text) {
         System.out.println("Will add text " + text);
@@ -33,6 +42,18 @@ public class Text implements Drawable {
         }
         index = index % texts.length;
         System.out.println("Rendering text " + texts[index] + " at index " + index + " to " + pa);
-        pdf.drawText(texts[index], pa, font, size);
+        switch (type) {
+            case Type.OneLine:
+                pdf.drawOneLineText(texts[index], pa, font, size);            
+                break;
+            case Type.MultiLine:
+                pdf.drawMultiLineText(texts[index], pa, font, size);
+                break;
+            case Type.Crop:
+                pdf.drawCropText(texts[index], pa, font, size);
+                break;
+            default:
+                break;
+        }
     }
 }
