@@ -36,16 +36,34 @@ public class PDFManager {
     public PositionedArea getPrintPA() {
         return printArea;
     }
-    private class PDFPA {
+    public static class PDFPosition {
         public float x;
         public float y;
-        public float width;
-        public float height;
-        public PDFPA(float x, float y, float width, float height) {
+        public PDFPosition(float x, float y) {
             this.x = x;
             this.y = y;
+        }
+        public PDFPosition() {
+            this(0, 0);
+        }
+    }
+    public static class PDFArea {
+        public float width;
+        public float height;
+        public PDFArea(float width, float height) {
             this.width = width;
             this.height = height;
+        }
+        public PDFArea() {
+            this(0, 0);
+        }
+    }
+    public static class PDFPA {
+        public PDFPosition pos;
+        public PDFArea area;
+        public PDFPA(float x, float y, float width, float height) {
+            pos = new PDFPosition(x, y);
+            area = new PDFArea(width, height);
         }
     }
     private PDFPA transform(PositionedArea pa) {
@@ -55,11 +73,13 @@ public class PDFManager {
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
     }
-    public void drawImage(File image, PositionedArea pa) {
+    public void drawImage(File image, PositionedArea pa, Fit fit) {
         try {
             PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
             PDFPA pdfpa = transform(pa);
-            contentStream.drawImage(pdImage, pdfpa.x, pdfpa.y, pdfpa.width, pdfpa.height);
+            PDFArea imageArea = new PDFArea(pdImage.getWidth(), pdImage.getHeight());
+            PDFPA imagePA = fit.givePositionedArea(imageArea, pdfpa);
+            contentStream.drawImage(pdImage, imagePA.pos.x, imagePA.pos.y, imagePA.area.width, imagePA.area.height);
         } catch (IOException e) {
             System.err.println("Failed to draw image " + image.getName());
             e.printStackTrace();
@@ -69,7 +89,7 @@ public class PDFManager {
         try {
             PDFPA pdfpa = transform(pa);
             contentStream.beginText();
-            contentStream.newLineAtOffset(pdfpa.x, pdfpa.y);
+            contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y);
             contentStream.setFont(font, fontSize);
             contentStream.showText(text);
             contentStream.endText();

@@ -2,12 +2,12 @@ package karlord19.cardarchitect;
 
 public class Fit {
     public enum FitType {
-        ORIGINAL,
         FIT_WIDTH,
         FIT_HEIGHT,
-        FIT_BOTH
+        FIT_BOTH,
+        STRETCH
     };
-    private FitType fitType = FitType.ORIGINAL;
+    private FitType fitType;
     public void setFitType(FitType fitType) {
         this.fitType = fitType;
     }
@@ -17,7 +17,7 @@ public class Fit {
         CENTER,
         RIGHT
     };
-    private FitPositionX fitPositionX = FitPositionX.LEFT;
+    private FitPositionX fitPositionX;
     public void setFitPositionX(FitPositionX fitPositionX) {
         this.fitPositionX = fitPositionX;
     }
@@ -27,44 +27,58 @@ public class Fit {
         CENTER,
         BOTTOM
     };
-    private FitPositionY fitPositionY = FitPositionY.TOP;
+    private FitPositionY fitPositionY;
     public void setFitPositionY(FitPositionY fitPositionY) {
         this.fitPositionY = fitPositionY;
     }
 
-    public Area giveArea(Area area, Area boundingBox) {
-        Area newArea = new Area();
+    public Fit() {
+        fitType = FitType.STRETCH;
+        fitPositionX = FitPositionX.CENTER;
+        fitPositionY = FitPositionY.CENTER;
+    }
+
+    private PDFManager.PDFArea giveArea(PDFManager.PDFArea imgArea, PDFManager.PDFArea boundingBox) {
+        float width = 0;
+        float height = 0;
         switch (fitType) {
-            case ORIGINAL:
-                newArea = area;
+            case STRETCH:
+                width = boundingBox.width;
+                height = boundingBox.height;
                 break;
             case FIT_WIDTH:
-                newArea.width = boundingBox.width;
-                newArea.height = area.height * boundingBox.width / area.width;
+                width = boundingBox.width;
+                height = imgArea.height * boundingBox.width / imgArea.width;
+                if (height > boundingBox.height) {
+                    System.out.println("Warning: image is too high to fit in bounding box to fit width.");
+                }
                 break;
             case FIT_HEIGHT:
-                newArea.height = boundingBox.height;
-                newArea.width = area.width * boundingBox.height / area.height;
+                height = boundingBox.height;
+                width = imgArea.width * boundingBox.height / imgArea.height;
+                if (width > boundingBox.width) {
+                    System.out.println("Warning: image is too wide to fit in bounding box to fit height.");
+                }
                 break;
             case FIT_BOTH:
-                if (area.width / area.height > boundingBox.width / boundingBox.height) {
-                    newArea.width = boundingBox.width;
-                    newArea.height = area.height * boundingBox.width / area.width;
+                if (imgArea.width / imgArea.height > boundingBox.width / boundingBox.height) {
+                    width = boundingBox.width;
+                    height = imgArea.height * boundingBox.width / imgArea.width;
                 } else {
-                    newArea.height = boundingBox.height;
-                    newArea.width = area.width * boundingBox.height / area.height;
+                    height = boundingBox.height;
+                    width = imgArea.width * boundingBox.height / imgArea.height;
                 }
                 break;
             default:
                 break;
         }
-        return newArea;
+        return new PDFManager.PDFArea(width, height);
     }
 
-    public PositionedArea givePositionedArea(Area area, PositionedArea boundingBox) {
-        int x = 0;
-        int y = 0;
-        Area givenArea = giveArea(area, boundingBox.area);
+    public PDFManager.PDFPA givePositionedArea(PDFManager.PDFArea imgArea, PDFManager.PDFPA boundingBox) {
+        float x = 0;
+        float y = 0;
+        PDFManager.PDFArea givenArea = giveArea(imgArea, boundingBox.area);
         switch (fitPositionX) {
             case LEFT:
                 x = boundingBox.pos.x;
@@ -80,17 +94,17 @@ public class Fit {
         }
         switch (fitPositionY) {
             case TOP:
-                y = boundingBox.pos.y;
-                break;
-            case CENTER:
-                y = boundingBox.pos.y + (boundingBox.area.height - givenArea.height) / 2;
-                break;
-            case BOTTOM:
                 y = boundingBox.pos.y + boundingBox.area.height - givenArea.height;
+            break;
+            case CENTER:
+            y = boundingBox.pos.y + (boundingBox.area.height - givenArea.height) / 2;
+            break;
+            case BOTTOM:
+                y = boundingBox.pos.y;
                 break;
             default:
                 break;
         }
-        return new PositionedArea(x, y, givenArea.width, givenArea.height);
+        return new PDFManager.PDFPA(x, y, givenArea.width, givenArea.height);
     }
 }

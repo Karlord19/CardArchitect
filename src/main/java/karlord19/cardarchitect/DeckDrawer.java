@@ -51,7 +51,7 @@ public class DeckDrawer {
                     pdf.getPrintPA().pos.y + i * (cardHeight + columnSpace),
                     cardWidth,
                     cardHeight);
-                card.draw(pa, i * cardsInColumn + j, pdf);
+                card.draw(pa, i * cardsInRow + j, pdf);
             }
         }
         drawDeckAfter(pdf);

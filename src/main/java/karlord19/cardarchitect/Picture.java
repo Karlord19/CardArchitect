@@ -4,6 +4,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Picture
@@ -13,9 +14,11 @@ import java.io.File;
 public class Picture implements Drawable {
 
     private File[] pictures;
+    private Fit fit;
 
     public Picture() {
         this.pictures = new File[0];
+        this.fit = new Fit();
     }
 
     public void addPicture(String path) {
@@ -58,7 +61,12 @@ public class Picture implements Drawable {
         }
         File[] croppedPictures = new File[i];
         System.arraycopy(newPictures, 0, croppedPictures, 0, i);
+        Arrays.sort(croppedPictures, (File f1, File f2) -> f1.getName().compareTo(f2.getName()));
         this.pictures = croppedPictures;
+    }
+
+    public void setFit(Fit fit) {
+        this.fit = fit;
     }
     
     public void draw(PositionedArea pa, int index, PDFManager pdf) {
@@ -68,6 +76,6 @@ public class Picture implements Drawable {
         }
         index = index % pictures.length;
         System.out.println("Rendering picture " + pictures[index].getName() + " at index " + index + " to " + pa);
-        pdf.drawImage(pictures[index], pa);
+        pdf.drawImage(pictures[index], pa, fit);
     }
 }
