@@ -2,6 +2,7 @@ package karlord19.cardarchitect.example;
 
 import karlord19.cardarchitect.DeckDrawer;
 import karlord19.cardarchitect.Picture;
+import karlord19.cardarchitect.Text;
 import karlord19.cardarchitect.Card;
 
 /**
@@ -10,21 +11,25 @@ import karlord19.cardarchitect.Card;
 public class BasicTemplate {
 
     public static void main(String[] args) {
-        Picture pictureTL = new Picture();
-        pictureTL.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
+        Card card = new Card(3, 3);
+        card.setWidthsEqual(55000);
+        card.setHeights(new int[] { 10000, 20000, 30000 });
+
+        Text textTL = new Text("Top Left");
+        card.add(textTL, "TL", 0, 0, 0, 1);
+
         Picture pictureTR = new Picture();
-        pictureTR.addPictures("example/BasicTemplate/pics/", "blue[0-9]{2}[.]png");
+        pictureTR.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
+        card.add(pictureTR, "TR", 0, 2, 1, 2);
+
         Picture pictureBL = new Picture();
-        pictureBL.addPictures("example/BasicTemplate/pics/", "green[0-9]{2}[.]png");
-        Picture pictureBR = new Picture();
-        pictureBR.addPictures("example/BasicTemplate/pics/", "yellow[0-9]{2}[.]png");
-        Card card = new Card(2, 2);
-        card.setWidths(new int[] { 20000, 50000 });
-        card.setHeights(new int[] { 30000, 80000 });
-        card.add(pictureTL, 0, 0);
-        card.add(pictureTR, 0, 1);
-        card.add(pictureBL, 1, 0);
-        card.add(pictureBR, 1, 1);
+        pictureBL.addPictures("example/BasicTemplate/pics/", "blue[0-9]{2}[.]png");
+        card.add(pictureBL, "MM", 1, 0, 2, 1);
+
+        Picture pictureR = new Picture();
+        pictureR.addPictures("example/BasicTemplate/pics/", "green[0-9]{2}[.]png");
+        card.add(pictureR, "R", 2, 2);
+
         DeckDrawer deckDrawer = new DeckDrawer();
         deckDrawer.drawDeck(card, "BasicTemplate.pdf");
     }

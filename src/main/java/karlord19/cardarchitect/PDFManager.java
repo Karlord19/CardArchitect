@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -13,8 +14,8 @@ public class PDFManager {
     private PDPageContentStream contentStream;
     private String file;
     private PositionedArea printArea;
-    private float[] margins; // top, right, bottom, left
-    public PDFManager(String path, float[] margins) {
+    private int[] margins; // top, right, bottom, left
+    public PDFManager(String path, int[] margins) {
         file = path;
         document = new PDDocument();
         this.margins = margins;
@@ -22,7 +23,9 @@ public class PDFManager {
     public void addPage() throws Exception {
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
-        printArea = new PositionedArea(0, 0, page.getMediaBox().getWidth() - margins[3] - margins[1], page.getMediaBox().getHeight() - margins[0] - margins[2]);
+        int width = Metrics.p2m(page.getMediaBox().getWidth()) - margins[3] - margins[1];
+        int height = Metrics.p2m(page.getMediaBox().getHeight()) - margins[0] - margins[2];
+        printArea = new PositionedArea(0, 0, width, height);
         contentStream = new PDPageContentStream(document, page);
     }
     public void close() throws Exception {
@@ -30,27 +33,48 @@ public class PDFManager {
         document.save(file);
         document.close();
     }
-    public PDDocument getDocument() {
-        return document;
-    }
-    public PDPageContentStream getContentStream() {
-        return contentStream;
-    }
     public PositionedArea getPrintPA() {
         return printArea;
     }
-    private PositionedArea transform(PositionedArea pa) {
-        float x = pa.pos.x + margins[3];
-        float y = printArea.area.height + margins[2] - pa.pos.y - pa.area.height;
-        return new PositionedArea(x, y, pa.area.width, pa.area.height);
+    private class PDFPA {
+        public float x;
+        public float y;
+        public float width;
+        public float height;
+        public PDFPA(float x, float y, float width, float height) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
+    }
+    private PDFPA transform(PositionedArea pa) {
+        float x = Metrics.m2p(pa.pos.x + margins[3]);
+        float y = Metrics.m2p(printArea.area.height + margins[2] - pa.pos.y - pa.area.height);
+        float width = Metrics.m2p(pa.area.width);
+        float height = Metrics.m2p(pa.area.height);
+        return new PDFPA(x, y, width, height);
     }
     public void drawImage(File image, PositionedArea pa) {
         try {
             PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
-            pa = transform(pa);
-            contentStream.drawImage(pdImage, pa.pos.x, pa.pos.y, pa.area.width, pa.area.height);
+            PDFPA pdfpa = transform(pa);
+            contentStream.drawImage(pdImage, pdfpa.x, pdfpa.y, pdfpa.width, pdfpa.height);
         } catch (IOException e) {
             System.err.println("Failed to draw image " + image.getName());
+            e.printStackTrace();
+        }
+    }
+    public void drawText(String text, PositionedArea pa, PDFont font, int fontSize) {
+        try {
+            PDFPA pdfpa = transform(pa);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(pdfpa.x, pdfpa.y);
+            contentStream.setFont(font, fontSize);
+            contentStream.showText(text);
+            contentStream.endText();
+        } catch (Exception e) {
+            System.err.println("Failed to draw text " + text);
             e.printStackTrace();
         }
     }

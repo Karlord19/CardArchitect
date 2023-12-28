@@ -1,9 +1,9 @@
 package karlord19.cardarchitect;
 
 public class DeckDrawer {
-    private float[] margins; // top, right, bottom, left
+    private int[] margins; // top, right, bottom, left
     private void setMargins(int top, int right, int bottom, int left) {
-        margins = Metrics.m2p(new int[] { top, right, bottom, left });
+        margins = new int[] { top, right, bottom, left };
     }
     // use default 5000 margins
     public DeckDrawer() {
@@ -32,17 +32,18 @@ public class DeckDrawer {
             return;
         }
     }
-    public void drawDeck(Card card, String pdfPath) {
+    public void drawDeck(Card card, String pdfPath) { // print just first page
         PDFManager pdf = drawDeckBefore(pdfPath);
         if (pdf == null) {
             return;
         }
-        float cardWidth = card.getWidth();
-        float cardHeight = card.getHeight();
+        int cardWidth = card.getWidth();
+        int cardHeight = card.getHeight();
         int cardsInRow = (int)(pdf.getPrintPA().area.width / cardWidth);
         int cardsInColumn = (int)(pdf.getPrintPA().area.height / cardHeight);
-        float rowSpace = (pdf.getPrintPA().area.width - (cardWidth * cardsInRow)) / (cardsInRow - 1);
-        float columnSpace = (pdf.getPrintPA().area.height - (cardHeight * cardsInColumn)) / (cardsInColumn - 1);
+        int rowSpace = (pdf.getPrintPA().area.width - (cardWidth * cardsInRow)) / (cardsInRow - 1);
+        int columnSpace = (pdf.getPrintPA().area.height - (cardHeight * cardsInColumn)) / (cardsInColumn - 1);
+        System.out.println("Will draw " + cardsInRow + " cards in row and " + cardsInColumn + " cards in column.");
         for (int i = 0; i < cardsInColumn; i++) {
             for (int j = 0; j < cardsInRow; j++) {
                 PositionedArea pa = new PositionedArea(

@@ -1,8 +1,13 @@
 package karlord19.cardarchitect;
 
+/**
+ * PositionedArea
+ * A class that represents an area with a position.
+ * Its elements are public and final.
+ */
 public class PositionedArea {
-    public Area area;
-    public Position pos;
+    public final Area area;
+    public final Position pos;
     public PositionedArea() {
         area = new Area(0, 0);
         pos = new Position(0, 0);
@@ -14,7 +19,7 @@ public class PositionedArea {
         this.area = area;
         this.pos = pos;
     }
-    public PositionedArea(float x, float y, float width, float height) {
+    public PositionedArea(int x, int y, int width, int height) {
         this.area = new Area(width, height);
         this.pos = new Position(x, y);
     }

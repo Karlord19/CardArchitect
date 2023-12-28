@@ -1,17 +1,19 @@
 package karlord19.cardarchitect;
 
+import java.util.HashMap;
+
 public class Card implements Drawable {
-    private Drawable[][] elements;
+    private HashMap<String, Drawable> namedElements;
     private int rows;
-    private float[] rowHeights;
     private int columns;
-    private float[] columnWidths;
+    private Grid grid;
     public Card(int rows, int columns) {
         this.rows = rows;
-        this.rowHeights = new float[rows];
         this.columns = columns;
-        this.columnWidths = new float[columns];
-        elements = new Drawable[rows][columns];
+        namedElements = new HashMap<String, Drawable>();
+        grid = new Grid(rows, columns);
+        setWidthsEqual(50000);
+        setHeightsEqual(50000);
     }
     public Card() {
         this(1, 1);
@@ -21,50 +23,66 @@ public class Card implements Drawable {
             System.out.println("Bad number of widths.");
             return;
         }
-        this.columnWidths = Metrics.m2p(widths);
+        grid.setWidths(widths);
     }
     public void setHeights(int[] heights) {
         if (heights.length != rows) {
             System.out.println("Bad number of heights.");
             return;
         }
-        this.rowHeights = Metrics.m2p(heights);
+        grid.setHeights(heights);
+    }
+    public void setWidthsEqual(int widthSum) {
+        int width = widthSum / columns;
+        int[] widths = new int[columns];
+        for (int i = 0; i < columns; i++) {
+            widths[i] = width;
+        }
+        int remainder = widthSum % columns;
+        for (int i = 0; i < remainder; i++) {
+            widths[i]++;
+        }
+        grid.setWidths(widths);
+    }
+    public void setHeightsEqual(int heightSum) {
+        int height = heightSum / rows;
+        int[] heights = new int[rows];
+        for (int i = 0; i < rows; i++) {
+            heights[i] = height;
+        }
+        int remainder = heightSum % rows;
+        for (int i = 0; i < remainder; i++) {
+            heights[i]++;
+        }
+        grid.setHeights(heights);
     }
     public int getWidth() {
-        int width = 0;
-        for (int i = 0; i < columns; i++) {
-            width += columnWidths[i];
-        }
-        return width;
+        return grid.getWidth();
     }
     public int getHeight() {
-        int height = 0;
-        for (int i = 0; i < rows; i++) {
-            height += rowHeights[i];
-        }
-        return height;
+        return grid.getHeight();
     }
-    public void add(Drawable drawable, int row, int column) {
-        elements[row][column] = drawable;
+    public void add(Drawable drawable, String name, int startRow, int startColumn, int endRow, int endColumn) {
+        if (grid.add(name, startRow, startColumn, endRow, endColumn)) {
+            namedElements.put(name, drawable);
+        } else {
+            System.out.println("Did not add " + name + " to cells " + startRow + ", " + startColumn + ", " + endRow + ", " + endColumn);
+        }
+    }
+    public void add(Drawable drawable, String name, int row, int column) {
+        add(drawable, name, row, column, row, column);
     }
     public void add(Drawable drawable) {
-        add(drawable, 0, 0);
+        add(drawable, "", 0, 0);
     }
     public void draw(PositionedArea pa, int index, PDFManager pdf) {
-        float widthSum = 0;
-        float heightSum = 0;
-        for (int i = 0; i < rows; i++) {
-            float height = rowHeights[i];
-            widthSum = 0;
-            for (int j = 0; j < columns; j++) {
-                float width = columnWidths[j];
-                PositionedArea subPa = new PositionedArea(pa.pos.x + widthSum, pa.pos.y + heightSum, width, height);
-                if (elements[i][j] != null) {
-                    elements[i][j].draw(subPa, index, pdf);
-                }
-                widthSum += width;
-            }
-            heightSum += height;
+        grid.setPA(pa);
+        System.out.println("Card drawing to " + pa);
+        for (String name : namedElements.keySet()) {
+            System.out.println("Card drawing " + name);
+            Drawable drawable = namedElements.get(name);
+            PositionedArea subPA = grid.getPA(name);
+            drawable.draw(subPA, index, pdf);
         }
     }
 }

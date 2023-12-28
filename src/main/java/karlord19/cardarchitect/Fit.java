@@ -62,34 +62,35 @@ public class Fit {
     }
 
     public PositionedArea givePositionedArea(Area area, PositionedArea boundingBox) {
-        PositionedArea positionedArea = new PositionedArea();
-        positionedArea.area = giveArea(area, boundingBox.area);
+        int x = 0;
+        int y = 0;
+        Area givenArea = giveArea(area, boundingBox.area);
         switch (fitPositionX) {
             case LEFT:
-                positionedArea.pos.x = boundingBox.pos.x;
+                x = boundingBox.pos.x;
                 break;
             case CENTER:
-                positionedArea.pos.x = boundingBox.pos.x + (boundingBox.area.width - positionedArea.area.width) / 2;
+                x = boundingBox.pos.x + (boundingBox.area.width - givenArea.width) / 2;
                 break;
             case RIGHT:
-                positionedArea.pos.x = boundingBox.pos.x + boundingBox.area.width - positionedArea.area.width;
+                x = boundingBox.pos.x + boundingBox.area.width - givenArea.width;
                 break;
             default:
                 break;
         }
         switch (fitPositionY) {
             case TOP:
-                positionedArea.pos.y = boundingBox.pos.y;
+                y = boundingBox.pos.y;
                 break;
             case CENTER:
-                positionedArea.pos.y = boundingBox.pos.y + (boundingBox.area.height - positionedArea.area.height) / 2;
+                y = boundingBox.pos.y + (boundingBox.area.height - givenArea.height) / 2;
                 break;
             case BOTTOM:
-                positionedArea.pos.y = boundingBox.pos.y + boundingBox.area.height - positionedArea.area.height;
+                y = boundingBox.pos.y + boundingBox.area.height - givenArea.height;
                 break;
             default:
                 break;
         }
-        return positionedArea;
+        return new PositionedArea(x, y, givenArea.width, givenArea.height);
     }
 }

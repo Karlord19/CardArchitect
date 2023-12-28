@@ -11,4 +11,14 @@ public class Metrics {
         }
         return points;
     }
+    public static int p2m(float points) {
+        return (int)(((float)(points * 25400)) / ((float)72));
+    }
+    public static int[] p2m(float[] points) {
+        int[] micrometers = new int[points.length];
+        for (int i = 0; i < points.length; i++) {
+            micrometers[i] = p2m(points[i]);
+        }
+        return micrometers;
+    }
 }
