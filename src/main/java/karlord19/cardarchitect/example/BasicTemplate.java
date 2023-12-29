@@ -1,10 +1,6 @@
 package karlord19.cardarchitect.example;
 
-import karlord19.cardarchitect.DeckDrawer;
-import karlord19.cardarchitect.Picture;
-import karlord19.cardarchitect.Text;
-import karlord19.cardarchitect.Card;
-import karlord19.cardarchitect.Fit;
+import karlord19.cardarchitect.*;
 import org.apache.pdfbox.pdmodel.font.*;
 
 /**
@@ -24,8 +20,7 @@ public class BasicTemplate {
         // pictureTR.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
         // card.add(pictureTR, "TR", 0, 2, 1, 2);
 
-        Text textTR = new Text("moc moc\nmoc textu");
-        textTR.setType(Text.Type.MultiLine);
+        Text textTR = new Text("moc moc moc textu");
         card.add(textTR, "TR", 0, 2, 1, 2);
         
         // Fit fitTW = new Fit();
@@ -37,9 +32,8 @@ public class BasicTemplate {
         // pictureBL.setFit(fitTW);
         // card.add(pictureBL, "MM", 1, 0, 2, 1);
 
-        Text textBL = new Text("a a a a a a a a a a a a a a a a a a a megamocmocdlouheslovozesetamurcitenevejde a a a a a a a a a a a a a a a a a");
-        textBL.setType(Text.Type.Crop);
-        textBL.setFont(PDType1Font.HELVETICA, 10);
+        WrapText textBL = new WrapText("a a a a a a a a a a a a a a a a a a a megamocmocdlouheslovozesetamurcitenevejde a a a a a a a a a a a a a a a a a");
+        textBL.setFont(PDType1Font.COURIER, 10);
         card.add(textBL, "BL", 1, 0, 2, 1);
 
         Fit fitMH = new Fit();

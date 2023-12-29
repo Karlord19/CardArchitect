@@ -46,6 +46,9 @@ public class PDFManager {
         public PDFPosition() {
             this(0, 0);
         }
+        public String toString() {
+            return "PDFPos: (" + x + ", " + y + ")";
+        }
     }
     public static class PDFArea {
         public float width;
@@ -57,6 +60,9 @@ public class PDFManager {
         public PDFArea() {
             this(0, 0);
         }
+        public String toString() {
+            return "PDFArea: (" + width + ", " + height + ")";
+        }
     }
     public static class PDFPA {
         public PDFPosition pos;
@@ -65,13 +71,22 @@ public class PDFManager {
             pos = new PDFPosition(x, y);
             area = new PDFArea(width, height);
         }
+        public PDFPA() {
+            this(0, 0, 0, 0);
+        }
+        public String toString() {
+            return "PDFPA: " + pos + " " + area;
+        }
     }
-    private PDFPA transform(PositionedArea pa) {
+    public PDFPA transform(PositionedArea pa) {
         float x = Metrics.m2p(pa.pos.x + margins[3]);
         float y = Metrics.m2p(printArea.area.height + margins[2] - pa.pos.y - pa.area.height);
         float width = Metrics.m2p(pa.area.width);
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
+    }
+    public PDPageContentStream getContentStream() {
+        return contentStream;
     }
     public void drawImage(File image, PositionedArea pa, Fit fit) {
         try {
@@ -90,14 +105,39 @@ public class PDFManager {
             e.printStackTrace();
         }
     }
-    public void drawOneLineText(String text, PositionedArea pa, PDFont font, int fontSize) {
+    public enum TextType {
+        OneLine,
+        MultiLine,
+        Crop
+    }
+    public void drawText(String text, PositionedArea pa, PDFont font, int fontSize, Fit fit, TextType tt) {
         try {
             PDFPA pdfpa = transform(pa);
             contentStream.beginText();
-            contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
             contentStream.setFont(font, fontSize);
-            contentStream.showText(text);
+            switch (tt) {
+                case TextType.OneLine:
+                    drawOneLineText(text, pdfpa, font, fontSize, fit);
+                    break;
+                case TextType.MultiLine:
+                    drawMultiLineText(text, pdfpa, font, fontSize, fit);
+                    break;
+                case TextType.Crop:
+                    drawCropText(text, pa, font, fontSize, fit);
+                    break;
+                default:
+                    break;
+            }
             contentStream.endText();
+        } catch (Exception e) {
+            System.err.println("Failed to draw text " + text);
+            e.printStackTrace();
+        }
+    }
+    public void drawOneLineText(String text, PDFPA pdfpa, PDFont font, int fontSize, Fit fit) {
+        try {
+            contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
+            contentStream.showText(text);
             if (font.getStringWidth(text) > pdfpa.area.width) {
                 System.out.println("Warning: text is too long to fit in bounding box." + text);
             }
@@ -109,12 +149,9 @@ public class PDFManager {
             e.printStackTrace();
         }
     }
-    public void drawMultiLineText(String text, PositionedArea pa, PDFont font, int fontSize) {
+    public void drawMultiLineText(String text, PDFPA pdfpa, PDFont font, int fontSize, Fit fit) {
         try {
-            PDFPA pdfpa = transform(pa);
-            contentStream.beginText();
             contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
-            contentStream.setFont(font, fontSize);
             String[] lines = text.split("\n");
             for (String line : lines) {
                 contentStream.showText(line);
@@ -123,7 +160,6 @@ public class PDFManager {
                     System.out.println("Warning: text is too long to fit in bounding box." + line);
                 }
             }
-            contentStream.endText();
             if (fontSize * lines.length > pdfpa.area.height) {
                 System.out.println("Warning: text is too high to fit in bounding box." + text);
             }
@@ -132,7 +168,7 @@ public class PDFManager {
             e.printStackTrace();
         }
     }
-    public void drawCropText(String text, PositionedArea pa, PDFont font, int fontSize) {
+    public void drawCropText(String text, PositionedArea pa, PDFont font, int fontSize, Fit fit) {
         try {
             PDFPA pdfpa = transform(pa);
             contentStream.beginText();
