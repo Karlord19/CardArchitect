@@ -20,7 +20,8 @@ public class BasicTemplate {
         // pictureTR.addPictures("example/BasicTemplate/pics/", "red[0-9]{2}[.]png");
         // card.add(pictureTR, "TR", 0, 2, 1, 2);
 
-        Text textTR = new Text("moc moc moc textu");
+        WrapText textTR = new WrapText("moc moc moc textu");
+        textTR.setFont(PDType1Font.COURIER, 20);
         card.add(textTR, "TR", 0, 2, 1, 2);
         
         // Fit fitTW = new Fit();
@@ -32,8 +33,12 @@ public class BasicTemplate {
         // pictureBL.setFit(fitTW);
         // card.add(pictureBL, "MM", 1, 0, 2, 1);
 
-        WrapText textBL = new WrapText("a a a a a a a a a a a a a a a a a a a megamocmocdlouheslovozesetamurcitenevejde a a a a a a a a a a a a a a a a a");
+        MultilineText textBL = new MultilineText("a a srdtsa\nasd a dsa ocmocdlouheslovozesetamurcitenevejde a a ads a\ndts a a\na");
         textBL.setFont(PDType1Font.COURIER, 10);
+        Fit fitCC = new Fit();
+        fitCC.setFitPositionX(Fit.FitPositionX.CENTER);
+        fitCC.setFitPositionY(Fit.FitPositionY.CENTER);
+        textBL.setFit(fitCC);
         card.add(textBL, "BL", 1, 0, 2, 1);
 
         Fit fitMH = new Fit();
@@ -43,6 +48,8 @@ public class BasicTemplate {
         pictureR.addPictures("example/BasicTemplate/pics/", "green[0-9]{2}[.]png");
         pictureR.setFit(fitMH);
         card.add(pictureR, "R", 2, 2);
+
+        card.numberOfCards = 20;
 
         DeckDrawer deckDrawer = new DeckDrawer();
         deckDrawer.drawDeck(card, "BasicTemplate.pdf");

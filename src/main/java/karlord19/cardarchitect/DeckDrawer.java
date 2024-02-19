@@ -1,7 +1,10 @@
 package karlord19.cardarchitect;
 
+import java.util.logging.Logger;
+
 public class DeckDrawer {
     private int[] margins; // top, right, bottom, left
+    private static final Logger logger = Logger.getLogger(DeckDrawer.class.getName());
     private void setMargins(int top, int right, int bottom, int left) {
         margins = new int[] { top, right, bottom, left };
     }
@@ -12,48 +15,45 @@ public class DeckDrawer {
     public DeckDrawer(int top, int right, int bottom, int left) {
         setMargins(top, right, bottom, left);
     }
-    private PDFManager drawDeckBefore(String pdfPath) {
+    public void drawDeck(Card card, String pdfPath) {
         PDFManager pdf = new PDFManager(pdfPath, margins);
-        try {
-            pdf.addPage();
-        } catch (Exception e) {
-            System.err.println("Failed to add page.");
-            e.printStackTrace();
-            return null;
-        }
-        return pdf;
-    }
-    private void drawDeckAfter(PDFManager pdf) {
-        try {
-            pdf.close();
-        } catch (Exception e) {
-            System.err.println("Failed to close pdf.");
-            e.printStackTrace();
-            return;
-        }
-    }
-    public void drawDeck(Card card, String pdfPath) { // print just first page
-        PDFManager pdf = drawDeckBefore(pdfPath);
-        if (pdf == null) {
-            return;
-        }
         int cardWidth = card.getWidth();
         int cardHeight = card.getHeight();
         int cardsInRow = (int)(pdf.getPrintPA().area.width / cardWidth);
         int cardsInColumn = (int)(pdf.getPrintPA().area.height / cardHeight);
         int rowSpace = (pdf.getPrintPA().area.width - (cardWidth * cardsInRow)) / (cardsInRow - 1);
         int columnSpace = (pdf.getPrintPA().area.height - (cardHeight * cardsInColumn)) / (cardsInColumn - 1);
-        System.out.println("Will draw " + cardsInRow + " cards in row and " + cardsInColumn + " cards in column.");
-        for (int i = 0; i < cardsInColumn; i++) {
-            for (int j = 0; j < cardsInRow; j++) {
-                PositionedArea pa = new PositionedArea(
-                    pdf.getPrintPA().pos.x + j * (cardWidth + rowSpace),
-                    pdf.getPrintPA().pos.y + i * (cardHeight + columnSpace),
-                    cardWidth,
-                    cardHeight);
-                card.draw(pa, i * cardsInRow + j, pdf);
+        logger.info("Deck drawer will draw " + cardsInRow + " cards in row and " + cardsInColumn + " cards in column.");
+        
+        int numberOfPages = (int)Math.ceil((double)card.numberOfCards / (cardsInRow * cardsInColumn));
+        int remaindingCards = card.numberOfCards;
+        for (int i = 0; i < numberOfPages; i++) {
+            try {
+                pdf.addPage();
+            } catch (Exception e) {
+                logger.severe(pdfPath + " failed to add page.");
+                e.printStackTrace();
+                return;
+            }
+            for (int j = 0; j < cardsInColumn; j++) {
+                for (int k = 0; k < cardsInRow & remaindingCards > 0; k++) {
+                    PositionedArea pa = new PositionedArea(
+                        pdf.getPrintPA().pos.x + k * (cardWidth + rowSpace),
+                        pdf.getPrintPA().pos.y + j * (cardHeight + columnSpace),
+                        cardWidth,
+                        cardHeight);
+                    card.draw(pa, i * cardsInRow * cardsInColumn + j * cardsInRow + k, pdf);
+                    remaindingCards--;
+                }
             }
         }
-        drawDeckAfter(pdf);
+
+        try {
+            pdf.close();
+        } catch (Exception e) {
+            logger.severe(pdfPath + " failed to close.");
+            e.printStackTrace();
+            return;
+        }
     }
 }

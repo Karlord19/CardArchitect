@@ -1,10 +1,13 @@
 package karlord19.cardarchitect;
 
+import java.util.logging.Logger;
+
 public class Fit {
+    private Logger logger = Logger.getLogger(Fit.class.getName());
     public enum FitType {
         FIT_WIDTH,
         FIT_HEIGHT,
-        FIT_BOTH,
+        SCALE,
         STRETCH
     };
     private FitType fitType;
@@ -50,17 +53,17 @@ public class Fit {
                 width = boundingBox.width;
                 height = imgArea.height * boundingBox.width / imgArea.width;
                 if (height > boundingBox.height) {
-                    System.out.println("Warning: image is too high to fit in bounding box to fit width.");
+                    logger.warning("Fit width: image is taller by " + (height - boundingBox.height) + " than bounding box.");
                 }
                 break;
             case FIT_HEIGHT:
                 height = boundingBox.height;
                 width = imgArea.width * boundingBox.height / imgArea.height;
                 if (width > boundingBox.width) {
-                    System.out.println("Warning: image is too wide to fit in bounding box to fit height.");
+                    logger.warning("Fit height: image is wider by " + (width - boundingBox.width) + " than bounding box.");
                 }
                 break;
-            case FIT_BOTH:
+            case SCALE:
                 if (imgArea.width / imgArea.height > boundingBox.width / boundingBox.height) {
                     width = boundingBox.width;
                     height = imgArea.height * boundingBox.width / imgArea.width;
@@ -95,10 +98,10 @@ public class Fit {
         switch (fitPositionY) {
             case TOP:
                 y = boundingBox.pos.y + boundingBox.area.height - givenArea.height;
-            break;
+                break;
             case CENTER:
-            y = boundingBox.pos.y + (boundingBox.area.height - givenArea.height) / 2;
-            break;
+                y = boundingBox.pos.y + (boundingBox.area.height - givenArea.height) / 2;
+                break;
             case BOTTOM:
                 y = boundingBox.pos.y;
                 break;

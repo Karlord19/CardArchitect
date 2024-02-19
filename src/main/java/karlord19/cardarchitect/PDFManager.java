@@ -1,12 +1,11 @@
 package karlord19.cardarchitect;
 
-import java.io.File;
-import java.io.IOException;
+// import java.io.File;
+// import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 public class PDFManager {
@@ -15,17 +14,17 @@ public class PDFManager {
     private String file;
     private PositionedArea printArea;
     private int[] margins; // top, right, bottom, left
+    private PDRectangle pageSize = PDRectangle.A4;
     public PDFManager(String path, int[] margins) {
         file = path;
         document = new PDDocument();
         this.margins = margins;
+        printArea = new PositionedArea(0, 0, Metrics.p2m(pageSize.getWidth()) - margins[3] - margins[1], Metrics.p2m(pageSize.getHeight()) - margins[0] - margins[2]);
     }
     public void addPage() throws Exception {
-        PDPage page = new PDPage(PDRectangle.A4);
+        PDPage page = new PDPage(pageSize);
+        if (contentStream != null) contentStream.close();
         document.addPage(page);
-        int width = Metrics.p2m(page.getMediaBox().getWidth()) - margins[3] - margins[1];
-        int height = Metrics.p2m(page.getMediaBox().getHeight()) - margins[0] - margins[2];
-        printArea = new PositionedArea(0, 0, width, height);
         contentStream = new PDPageContentStream(document, page);
     }
     public void close() throws Exception {
@@ -35,6 +34,12 @@ public class PDFManager {
     }
     public PositionedArea getPrintPA() {
         return printArea;
+    }
+    public PDDocument getDocument() {
+        return document;
+    }
+    public PDPageContentStream getContentStream() {
+        return contentStream;
     }
     public static class PDFPosition {
         public float x;
@@ -85,26 +90,23 @@ public class PDFManager {
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
     }
-    public PDPageContentStream getContentStream() {
-        return contentStream;
-    }
-    public void drawImage(File image, PositionedArea pa, Fit fit) {
-        try {
-            PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
-            PDFPA pdfpa = transform(pa);
-            PDFArea imageArea = new PDFArea(pdImage.getWidth(), pdImage.getHeight());
-            PDFPA imagePA = fit.givePositionedArea(imageArea, pdfpa);
+    // public void drawImage(File image, PositionedArea pa, Fit fit) {
+    //     try {
+    //         PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
+    //         PDFPA pdfpa = transform(pa);
+    //         PDFArea imageArea = new PDFArea(pdImage.getWidth(), pdImage.getHeight());
+    //         PDFPA imagePA = fit.givePositionedArea(imageArea, pdfpa);
 
-            contentStream.saveGraphicsState();
-            contentStream.addRect(pdfpa.pos.x, pdfpa.pos.y, pdfpa.area.width, pdfpa.area.height);
-            contentStream.clip();
-            contentStream.drawImage(pdImage, imagePA.pos.x, imagePA.pos.y, imagePA.area.width, imagePA.area.height);
-            contentStream.restoreGraphicsState();
-        } catch (IOException e) {
-            System.err.println("Failed to draw image " + image.getName());
-            e.printStackTrace();
-        }
-    }
+    //         contentStream.saveGraphicsState();
+    //         contentStream.addRect(pdfpa.pos.x, pdfpa.pos.y, pdfpa.area.width, pdfpa.area.height);
+    //         contentStream.clip();
+    //         contentStream.drawImage(pdImage, imagePA.pos.x, imagePA.pos.y, imagePA.area.width, imagePA.area.height);
+    //         contentStream.restoreGraphicsState();
+    //     } catch (IOException e) {
+    //         System.err.println("Failed to draw image " + image.getName());
+    //         e.printStackTrace();
+    //     }
+    // }
     public enum TextType {
         OneLine,
         MultiLine,

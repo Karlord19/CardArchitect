@@ -1,38 +1,48 @@
 package karlord19.cardarchitect;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class Grid {
-    public class NamedArea {
-        public String name;
-        int startRow;
-        int startColumn;
-        int endRow;
-        int endColumn;
-        public NamedArea(String name, int startRow, int startColumn, int endRow, int endColumn) {
-            this.name = name;
+    private static class Rectangle {
+        public int startRow;
+        public int startColumn;
+        public int endRow;
+        public int endColumn;
+        public Rectangle(int startRow, int startColumn, int endRow, int endColumn) {
             this.startRow = startRow;
             this.startColumn = startColumn;
             this.endRow = endRow;
             this.endColumn = endColumn;
         }
     }
+    private Logger logger = Logger.getLogger(Grid.class.getName());
     private boolean[][] taken;
     private int[] widths;
     private int[] heights;
-    private HashMap<String, NamedArea> namedAreas;
+    private HashMap<String, Rectangle> namedRectangles;
     private PositionedArea gridPA;
     public Grid(int rows, int columns) {
         taken = new boolean[rows][columns];
-        namedAreas = new HashMap<String, NamedArea>();
+        widths = new int[columns];
+        heights = new int[rows];
+        namedRectangles = new HashMap<String, Rectangle>();
     }
     public Grid() {
         this(1, 1);
     }
     public void setWidths(int[] widths) {
+        if (widths.length != this.widths.length) {
+            logger.severe("Bad number of widths. Actual: " + widths.length + " expected: " + this.widths.length);
+            return;
+        }
         this.widths = widths;
     }
     public void setHeights(int[] heights) {
+        if (heights.length != this.heights.length) {
+            logger.severe("Bad number of heights. Actual: " + heights.length + " expected: " + this.heights.length);
+            return;
+        }
         this.heights = heights;
     }
     public int getWidth() {
@@ -50,28 +60,28 @@ public class Grid {
         return height;
     }
     public boolean add(String name, int startRow, int startColumn, int endRow, int endColumn) {
-        if (startRow < 0 || startRow >= taken.length || startColumn < 0 || startColumn >= taken[0].length) {
-            System.out.println("Bad start row or column.");
+        if (startRow < 0 || startRow >= heights.length || startColumn < 0 || startColumn >= widths.length) {
+            logger.severe(name + " has bad start row or column.");
             return false;
         }
-        if (endRow < 0 || endRow >= taken.length || endColumn < 0 || endColumn >= taken[0].length) {
-            System.out.println("Bad end row or column.");
+        if (endRow < 0 || endRow >= heights.length || endColumn < 0 || endColumn >= heights.length) {
+            logger.severe(name + " has bad end row or column.");
             return false;
         }
         if (startRow > endRow || startColumn > endColumn) {
-            System.out.println("Bad interval.");
+            logger.severe("Bad interval for " + name + ".");
             return false;
         }
         for (int i = startRow; i <= endRow; i++) {
             for (int j = startColumn; j <= endColumn; j++) {
                 if (taken[i][j]) {
-                    System.out.println("Area already taken.");
+                    logger.severe("Area already taken. on (" + i + ", " + j + ") for " + name + ".");
                     return false;
                 }
             }
         }
-        NamedArea na = new NamedArea(name, startRow, startColumn, endRow, endColumn);
-        namedAreas.put(name, na);
+        Rectangle na = new Rectangle(startRow, startColumn, endRow, endColumn);
+        namedRectangles.put(name, na);
         for (int i = startRow; i <= endRow; i++) {
             for (int j = startColumn; j <= endColumn; j++) {
                 taken[i][j] = true;
@@ -82,11 +92,10 @@ public class Grid {
     public void setPA(PositionedArea pa) {
         gridPA = pa;
     }
-    public PositionedArea getPA(String name) {
-        NamedArea na = namedAreas.get(name);
+    public PositionedArea getPA(String name) throws Exception {
+        Rectangle na = namedRectangles.get(name);
         if (na == null) {
-            System.out.println("No such name: " + name);
-            return null;
+            throw new Exception("No such named area " + name + ".");
         }
         int x = gridPA.pos.x;
         int y = gridPA.pos.y;
