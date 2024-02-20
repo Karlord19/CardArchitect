@@ -37,7 +37,7 @@ public class Fit {
     }
 
     public Fit() {
-        fitType = FitType.ORIGINAL;
+        fitType = FitType.SCALE;
         fitPositionX = FitPositionX.CENTER;
         fitPositionY = FitPositionY.CENTER;
     }
