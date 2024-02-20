@@ -46,6 +46,7 @@ public class Picture implements Drawable {
         File dir;
         try {
             URL url = getClass().getResource(dirPath);
+            if (url == null) throw new Exception();
             dir = new File(url.toURI());
         } catch (Exception e) {
             logger.warning("Failed to get path to picture directory " + dirPath);
@@ -82,15 +83,17 @@ public class Picture implements Drawable {
         index = index % pictures.length;
         logger.info("Drawing picture " + pictures[index].getName() + " at index " + index + " to " + pa);
 
+        pa.area.height += 5; pa.area.width += 5; // avoid blank space between pictures
         PDDocument document = pdf.getDocument();
         PDPageContentStream contentStream = pdf.getContentStream();
         try {
             PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), document);
-            PDFManager.PDFPA pdfpa = fit.givePositionedArea(new PDFManager.PDFArea(image.getWidth(), image.getHeight()), pdf.transform(pa));
+            PDFManager.PDFPA boundingBox = pdf.transform(pa);
+            PDFManager.PDFPA imageBox = fit.givePositionedArea(new PDFManager.PDFArea(image.getWidth(), image.getHeight()), boundingBox);
             contentStream.saveGraphicsState();
-            contentStream.addRect(pdfpa.pos.x, pdfpa.pos.y, pdfpa.area.width, pdfpa.area.height);
+            contentStream.addRect(boundingBox.pos.x, boundingBox.pos.y, boundingBox.area.width, boundingBox.area.height);
             contentStream.clip();
-            contentStream.drawImage(image, pdfpa.pos.x, pdfpa.pos.y, pdfpa.area.width, pdfpa.area.height);
+            contentStream.drawImage(image, imageBox.pos.x, imageBox.pos.y, imageBox.area.width, imageBox.area.height);
             contentStream.restoreGraphicsState();
         }
         catch (Exception e) {

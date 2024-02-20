@@ -8,7 +8,8 @@ public class Fit {
         FIT_WIDTH,
         FIT_HEIGHT,
         SCALE,
-        STRETCH
+        STRETCH,
+        ORIGINAL
     };
     private FitType fitType;
     public void setFitType(FitType fitType) {
@@ -36,7 +37,7 @@ public class Fit {
     }
 
     public Fit() {
-        fitType = FitType.STRETCH;
+        fitType = FitType.ORIGINAL;
         fitPositionX = FitPositionX.CENTER;
         fitPositionY = FitPositionY.CENTER;
     }
@@ -71,6 +72,10 @@ public class Fit {
                     height = boundingBox.height;
                     width = imgArea.width * boundingBox.height / imgArea.height;
                 }
+                break;
+            case ORIGINAL:
+                width = imgArea.width;
+                height = imgArea.height;
                 break;
             default:
                 break;

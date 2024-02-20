@@ -90,23 +90,7 @@ public class PDFManager {
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
     }
-    // public void drawImage(File image, PositionedArea pa, Fit fit) {
-    //     try {
-    //         PDImageXObject pdImage = PDImageXObject.createFromFile(image.getPath(), document);
-    //         PDFPA pdfpa = transform(pa);
-    //         PDFArea imageArea = new PDFArea(pdImage.getWidth(), pdImage.getHeight());
-    //         PDFPA imagePA = fit.givePositionedArea(imageArea, pdfpa);
 
-    //         contentStream.saveGraphicsState();
-    //         contentStream.addRect(pdfpa.pos.x, pdfpa.pos.y, pdfpa.area.width, pdfpa.area.height);
-    //         contentStream.clip();
-    //         contentStream.drawImage(pdImage, imagePA.pos.x, imagePA.pos.y, imagePA.area.width, imagePA.area.height);
-    //         contentStream.restoreGraphicsState();
-    //     } catch (IOException e) {
-    //         System.err.println("Failed to draw image " + image.getName());
-    //         e.printStackTrace();
-    //     }
-    // }
     public enum TextType {
         OneLine,
         MultiLine,

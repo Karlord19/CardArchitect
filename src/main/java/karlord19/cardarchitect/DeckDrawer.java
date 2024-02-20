@@ -50,8 +50,9 @@ public class DeckDrawer {
 
         try {
             pdf.close();
+            logger.info("Deck drawer saved document to " + pdfPath);
         } catch (Exception e) {
-            logger.severe(pdfPath + " failed to close.");
+            logger.severe(pdfPath + " failed to save document to " + pdfPath);
             e.printStackTrace();
             return;
         }
