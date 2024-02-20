@@ -17,14 +17,11 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
  */
 public class Picture implements Drawable {
 
-    private File[] pictures;
-    private Fit fit;
+    private File[] pictures = new File[0];
+    private Fit fit = new Fit();
     private Logger logger = Logger.getLogger(Picture.class.getName());
 
-    public Picture() {
-        this.pictures = new File[0];
-        this.fit = new Fit();
-    }
+    public Picture() {}
 
     public void addPicture(String path) {
         Path real_path;

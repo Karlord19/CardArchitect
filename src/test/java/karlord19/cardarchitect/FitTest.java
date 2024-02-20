@@ -5,15 +5,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 public class FitTest {
-    public Card createBoxAround() {
+    public static Card createBoxAround() {
         Card card = new Card(3,3);
+        card.setHeights(new int[]{10000, 50000, 10000});
+        card.setWidths(new int[]{10000, 50000, 10000});
 
         Picture picture = new Picture();
         picture.addPicture("FitTest/box.png");
         Fit fit = new Fit();
         fit.setFitType(Fit.FitType.STRETCH);
         picture.setFit(fit);
-        
+
         card.add(picture, "top", 0, 0, 0, 1);
         card.add(picture, "left", 1, 0, 2, 0);
         card.add(picture, "right", 0, 2, 1, 2);

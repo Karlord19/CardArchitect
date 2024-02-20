@@ -12,56 +12,44 @@ import java.util.logging.Logger;
  */
 public class Text implements Drawable {
 
-    protected ArrayList<String> texts;
+    protected ArrayList<String> texts = new ArrayList<String>();
     protected PDFont font = PDType1Font.HELVETICA;
     protected int fontSize = 30;
-    protected Logger logger;
+    protected Logger logger = Logger.getLogger(Text.class.getName());
 
-    public Text() {
-        texts = new ArrayList<String>();
-        logger = Logger.getLogger(Text.class.getName());
-        logger.info("Text obj created with no text.");
-    }
+    public Text() {}
     public Text(String text) {
-        texts = new ArrayList<String>();
         texts.add(text);
-        logger = Logger.getLogger(Text.class.getName());
-        logger.info("Text obj created with text " + text);
     }
     public Text(String[] texts) {
-        this.texts = new ArrayList<String>();
         for (String text : texts) {
             this.texts.add(text);
         }
-        logger = Logger.getLogger(Text.class.getName());
-        logger.info("Text obj created with texts " + texts);
     }
 
     public void addText(String text) {
         texts.add(text);
-        logger.info("Added text " + text);
     }
     public void addTexts(String[] texts) {
         for (String text : texts) {
             this.texts.add(text);
         }
-        logger.info("Added texts " + texts);
     }
 
     public void setFont(PDFont font, int size) {
         this.font = font;
         this.fontSize = size;
-        logger.info("Set font to " + font + " with size " + size);
     }
 
     protected void draw(PDFManager.PDFPA pdfpa, int index, PDPageContentStream contentStream) throws Exception {
         contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
         contentStream.showText(texts.get(index));
-        if (font.getStringWidth(texts.get(index)) > pdfpa.area.width) {
-            logger.warning("Text is too long to fit in bounding box. " + texts.get(index));
+        float dif;
+        if ((dif = font.getStringWidth(texts.get(index)) * fontSize / 1000 - pdfpa.area.width) > 0) {
+            logger.warning("Text is longer by " + dif + " to fit in bounding box: " + texts.get(index));
         }
-        if (fontSize > pdfpa.area.height) {
-            logger.warning("Text is too high to fit in bounding box. " + texts.get(index));
+        if ((dif = fontSize - pdfpa.area.height) > 0) {
+            logger.warning("Text is higher by " + dif + " to fit in bounding box: " + texts.get(index));
         }
     }
 
@@ -75,17 +63,33 @@ public class Text implements Drawable {
             return;
         }
         index = index % texts.size();
-        logger.info("Rendering text " + texts.get(index) + " at index " + index + " to " + pa);
-        PDFManager.PDFPA pdfpa = pdf.transform(pa);
+        logger.info("Drawing text " + texts.get(index) + " at index " + index + " to " + pa);
+
         PDPageContentStream contentStream = pdf.getContentStream();
         try {
+            PDFManager.PDFPA boundingBox = pdf.transform(pa);
+            contentStream.saveGraphicsState();
+            contentStream.addRect(boundingBox.pos.x, boundingBox.pos.y, boundingBox.area.width, boundingBox.area.height);
+            contentStream.clip();
             contentStream.beginText();
             contentStream.setFont(font, fontSize);
-            draw(pdfpa, index, contentStream);
-            contentStream.endText();
-        } catch (Exception e) {
-            logger.severe("Failed to draw text " + texts.get(index));
+            draw(boundingBox, index, contentStream);
+            contentStream.restoreGraphicsState();
+        }
+        catch (Exception e) {
+            logger.severe("Failed to draw text: " + texts.get(index));
             e.printStackTrace();
+            return;
+        }
+        finally {
+            try {
+                contentStream.endText();
+            }
+            catch (Exception e) {
+                logger.severe("Failed to end text: " + texts.get(index));
+                e.printStackTrace();
+                return;
+            }
         }
     }
 }
