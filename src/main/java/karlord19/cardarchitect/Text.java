@@ -41,15 +41,21 @@ public class Text implements Drawable {
         this.fontSize = size;
     }
 
-    protected void draw(PDFManager.PDFPA pdfpa, int index, PDPageContentStream contentStream) throws Exception {
-        contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
-        contentStream.showText(texts.get(index));
-        float dif;
-        if ((dif = font.getStringWidth(texts.get(index)) * fontSize / 1000 - pdfpa.area.width) > 0) {
-            logger.warning("Text is longer by " + dif + " to fit in bounding box: " + texts.get(index));
+    protected void draw(PDFManager.PDFPA pdfpa, int index, PDPageContentStream contentStream) {
+        try {
+            contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
+            contentStream.showText(texts.get(index));
+            float dif;
+            if ((dif = font.getStringWidth(texts.get(index)) * fontSize / 1000 - pdfpa.area.width) > 0) {
+                logger.warning("Text is longer by " + dif + " to fit in bounding box: " + texts.get(index));
+            }
+            if ((dif = fontSize - pdfpa.area.height) > 0) {
+                logger.warning("Text is higher by " + dif + " to fit in bounding box: " + texts.get(index));
+            }
         }
-        if ((dif = fontSize - pdfpa.area.height) > 0) {
-            logger.warning("Text is higher by " + dif + " to fit in bounding box: " + texts.get(index));
+        catch (Exception e) {
+            logger.severe("Failed to draw text " + texts.get(index));
+            e.printStackTrace();
         }
     }
 
@@ -69,27 +75,37 @@ public class Text implements Drawable {
         try {
             PDFManager.PDFPA boundingBox = pdf.transform(pa);
             contentStream.saveGraphicsState();
-            contentStream.addRect(boundingBox.pos.x, boundingBox.pos.y, boundingBox.area.width, boundingBox.area.height);
-            contentStream.clip();
-            contentStream.beginText();
-            contentStream.setFont(font, fontSize);
-            draw(boundingBox, index, contentStream);
-            contentStream.restoreGraphicsState();
-        }
-        catch (Exception e) {
-            logger.severe("Failed to draw text: " + texts.get(index));
-            e.printStackTrace();
-            return;
-        }
-        finally {
             try {
-                contentStream.endText();
+                contentStream.addRect(boundingBox.pos.x, boundingBox.pos.y, boundingBox.area.width, boundingBox.area.height);
+                contentStream.clip();
+                try {
+                    contentStream.beginText();
+                    try {
+                        contentStream.setFont(font, fontSize);
+                        draw(boundingBox, index, contentStream);
+                    }
+                    catch (Exception e) {
+                        logger.severe("Failed to set font while drawing text: " + texts.get(index));
+                        e.printStackTrace();
+                        return;
+                    }
+                    contentStream.endText();
+                }
+                catch (Exception e) {
+                    logger.severe("Failed to handle text block while drawing text: " + texts.get(index));
+                }
             }
             catch (Exception e) {
-                logger.severe("Failed to end text: " + texts.get(index));
+                logger.severe("Failed to clip text: " + texts.get(index));
                 e.printStackTrace();
                 return;
             }
+            contentStream.restoreGraphicsState();
+        }
+        catch (Exception e) {
+            logger.severe("Failed to handle graphics state while drawing text: " + texts.get(index));
+            e.printStackTrace();
+            return;
         }
     }
 }
