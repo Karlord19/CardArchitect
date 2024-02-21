@@ -1,8 +1,9 @@
 package karlord19.cardarchitect;
 
+import java.util.ArrayList;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
-public class WrapText extends Text {
+public class WrapText extends MultilineText {
 
     public WrapText() {
         super();
@@ -14,37 +15,24 @@ public class WrapText extends Text {
         super(texts);
     }
 
-    private void drawLine(PDFManager.PDFPA pdfpa, String line, PDPageContentStream contentStream) throws Exception {
-        contentStream.newLineAtOffset(0, -fontSize);
-        contentStream.showText(line);
-        if (font.getStringWidth(line) * fontSize / 1000 > pdfpa.area.width) {
-            System.out.println("Warning: line is too long to fit in bounding box." + line);
-        }
-    }
-
     @Override
-    protected void draw(PDFManager.PDFPA pdfpa, int index, PDPageContentStream contentStream) throws Exception {
+    protected void draw(PDFManager.PDFPA boundingBox, int index, PDPageContentStream contentStream) {
         String[] words = texts.get(index).split(" ");
         String line = null;
-        int lines = 0;
-        contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
+        ArrayList<String> lines = new ArrayList<String>();
         for (String word : words) {
             String newLine = (line == null) ? word : line + " " + word;
-            float newLineWidth = font.getStringWidth(newLine) / 1000 * fontSize;
-            if (newLineWidth > pdfpa.area.width) {
-                drawLine(pdfpa, line, contentStream);
-                lines++;
+            float newLineWidth = getWidth(newLine);
+            if (newLineWidth > boundingBox.area.width) {
+                lines.add(line);
                 line = word;
             } else {
                 line = newLine;
             }
         }
         if (line.length() > 0) {
-            drawLine(pdfpa, line, contentStream);
-            lines++;
+            lines.add(line);
         }
-        if (fontSize * lines > pdfpa.area.height) {
-            System.out.println("Warning: text is too high to fit in bounding box." + texts.get(index));
-        }
+        draw(lines.toArray(new String[0]), boundingBox, contentStream);
     }
 }

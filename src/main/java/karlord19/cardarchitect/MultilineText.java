@@ -37,9 +37,7 @@ public class MultilineText extends Text {
         return x;
     }
 
-    @Override
-    protected void draw(PDFManager.PDFPA boundingBox, int index, PDPageContentStream contentStream) {
-        String[] lines = texts.get(index).split("\n");
+    protected void draw(String[] lines, PDFManager.PDFPA boundingBox, PDPageContentStream contentStream) {
         float maxWidth = 0;
         for (String line : lines) {
             float lineWidth = getWidth(line);
@@ -52,7 +50,7 @@ public class MultilineText extends Text {
         }
         float heightSum = lines.length * fontSize;
         if (heightSum > boundingBox.area.height) {
-            System.out.println("Warning: text is too high to fit in bounding box." + texts.get(index));
+            System.out.println("Warning: text is too high to fit in bounding box." + lines);
         }
         PDFManager.PDFPA printPA = fit.givePositionedArea(new PDFManager.PDFArea(maxWidth, heightSum), boundingBox);
         try {
@@ -60,7 +58,7 @@ public class MultilineText extends Text {
             contentStream.newLineAtOffset(printPA.pos.x, printPA.pos.y + printPA.area.height);
         }
         catch (Exception e) {
-            logger.warning("Failed to draw text " + texts.get(index));
+            logger.warning("Failed to draw text " + lines);
             e.printStackTrace();
             return;
         }
@@ -68,5 +66,11 @@ public class MultilineText extends Text {
         for (String line : lines) {
             currentX = drawLine(boundingBox, line, contentStream, currentX);
         }
+    }
+
+    @Override
+    protected void draw(PDFManager.PDFPA boundingBox, int index, PDPageContentStream contentStream) {
+        String[] lines = texts.get(index).split("\n");
+        draw(lines, boundingBox, contentStream);
     }
 }
