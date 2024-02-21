@@ -11,7 +11,7 @@ public class FitTest {
         card.setWidths(new int[]{10000, 50000, 10000});
 
         Picture picture = new Picture();
-        picture.addPicture("FitTest/box.png");
+        picture.add("FitTest/box.png");
         Fit fit = new Fit();
         fit.setFitType(Fit.FitType.STRETCH);
         picture.setFit(fit);
@@ -38,7 +38,7 @@ public class FitTest {
         Card card = createBoxAround();
 
         Picture picture = new Picture();
-        picture.addPicture("FitTest/miniSquare.png");
+        picture.add("FitTest/miniSquare.png");
         Fit fit = new Fit();
         fit.setFitPositionX(fx);
         fit.setFitPositionY(fy);
@@ -71,7 +71,7 @@ public class FitTest {
         Card card = createBoxAround();
 
         Picture picture = new Picture();
-        picture.addPicture(imagePath);
+        picture.add(imagePath);
         Fit fit = new Fit();
         fit.setFitType(ft);
         picture.setFit(fit);

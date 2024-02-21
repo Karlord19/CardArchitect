@@ -22,8 +22,11 @@ public class Picture implements Drawable {
     private Logger logger = Logger.getLogger(Picture.class.getName());
 
     public Picture() {}
+    public Picture(String path) {
+        add(path);
+    }
 
-    public void addPicture(String path) {
+    public void add(String path) {
         Path real_path;
         try {
             URL url = getClass().getResource(path);
@@ -39,7 +42,7 @@ public class Picture implements Drawable {
         this.pictures = new_pictures;
     }
 
-    public void addPictures(String dirPath, String regex) {
+    public void addDir(String dirPath, String regex) {
         File dir;
         try {
             URL url = getClass().getResource(dirPath);

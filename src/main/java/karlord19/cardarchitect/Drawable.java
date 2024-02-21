@@ -8,4 +8,6 @@ package karlord19.cardarchitect;
 public interface Drawable {
     // in case of exception, just say it to the console, dont throw it
     public void draw(PositionedArea pa, int index, PDFManager pdf);
+
+    public void add(String thing);
 }

@@ -76,6 +76,12 @@ public class Card implements Drawable {
     public void add(Drawable drawable) {
         add(drawable, "", 0, 0);
     }
+    /**
+     * Just for interface
+     * Do not use, it does nothing
+     */
+    public void add(String thing) {}
+    
     public void draw(PositionedArea pa, int index, PDFManager pdf) {
         grid.setPA(pa);
         logger.info("Drawing card at index " + index + " to " + pa);

@@ -27,7 +27,7 @@ public class Text implements Drawable {
         }
     }
 
-    public void addText(String text) {
+    public void add(String text) {
         texts.add(text);
     }
     public void addTexts(String[] texts) {
