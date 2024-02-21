@@ -1,5 +1,6 @@
 package karlord19.cardarchitect;
 
+import java.io.File;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -26,6 +27,8 @@ public class PDFManager {
     }
     public void close() throws Exception {
         contentStream.close();
+        File f = new File(file);
+        if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
         document.save(file);
         document.close();
     }
