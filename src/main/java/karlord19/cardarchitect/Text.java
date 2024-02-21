@@ -46,7 +46,7 @@ public class Text implements Drawable {
             contentStream.newLineAtOffset(pdfpa.pos.x, pdfpa.pos.y + pdfpa.area.height - fontSize);
             contentStream.showText(texts.get(index));
             float dif;
-            if ((dif = font.getStringWidth(texts.get(index)) * fontSize / 1000 - pdfpa.area.width) > 0) {
+            if ((dif = getWidth(texts.get(index)) - pdfpa.area.width) > 0) {
                 logger.warning("Text is longer by " + dif + " to fit in bounding box: " + texts.get(index));
             }
             if ((dif = fontSize - pdfpa.area.height) > 0) {
@@ -54,7 +54,7 @@ public class Text implements Drawable {
             }
         }
         catch (Exception e) {
-            logger.severe("Failed to draw text " + texts.get(index));
+            logger.warning("Failed to draw text " + texts.get(index));
             e.printStackTrace();
         }
     }
@@ -85,27 +85,38 @@ public class Text implements Drawable {
                         draw(boundingBox, index, contentStream);
                     }
                     catch (Exception e) {
-                        logger.severe("Failed to set font while drawing text: " + texts.get(index));
+                        logger.warning("Failed to set font while drawing text: " + texts.get(index));
                         e.printStackTrace();
                         return;
                     }
                     contentStream.endText();
                 }
                 catch (Exception e) {
-                    logger.severe("Failed to handle text block while drawing text: " + texts.get(index));
+                    logger.warning("Failed to handle text block while drawing text: " + texts.get(index));
                 }
             }
             catch (Exception e) {
-                logger.severe("Failed to clip text: " + texts.get(index));
+                logger.warning("Failed to clip text: " + texts.get(index));
                 e.printStackTrace();
                 return;
             }
             contentStream.restoreGraphicsState();
         }
         catch (Exception e) {
-            logger.severe("Failed to handle graphics state while drawing text: " + texts.get(index));
+            logger.warning("Failed to handle graphics state while drawing text: " + texts.get(index));
             e.printStackTrace();
             return;
+        }
+    }
+
+    protected float getWidth(String text) {
+        try {
+            return font.getStringWidth(text) / 1000 * fontSize;
+        }
+        catch (Exception e) {
+            logger.warning("Failed to get width of text: " + text);
+            e.printStackTrace();
+            return 0;
         }
     }
 }
