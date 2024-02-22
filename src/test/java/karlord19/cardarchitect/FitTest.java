@@ -11,7 +11,7 @@ public class FitTest {
         card.setWidths(new int[]{10000, 50000, 10000});
 
         Picture picture = new Picture();
-        picture.add("FitTest/box.png");
+        picture.add("box.png");
         Fit fit = new Fit();
         fit.setFitType(Fit.FitType.STRETCH);
         picture.setFit(fit);
@@ -24,21 +24,21 @@ public class FitTest {
     }
     @ParameterizedTest
     @CsvSource({
-        "LEFT, TOP, FitTest/TopLeft.pdf",
-        "CENTER, TOP, FitTest/TopCenter.pdf",
-        "RIGHT, TOP, FitTest/TopRight.pdf",
-        "LEFT, CENTER, FitTest/CenterLeft.pdf",
-        "CENTER, CENTER, FitTest/CenterCenter.pdf",
-        "RIGHT, CENTER, FitTest/CenterRight.pdf",
-        "LEFT, BOTTOM, FitTest/BottomLeft.pdf",
-        "CENTER, BOTTOM, FitTest/BottomCenter.pdf",
-        "RIGHT, BOTTOM, FitTest/BottomRight.pdf"
+        "LEFT, TOP, Test/FitTest/TopLeft.pdf",
+        "CENTER, TOP, Test/FitTest/TopCenter.pdf",
+        "RIGHT, TOP, Test/FitTest/TopRight.pdf",
+        "LEFT, CENTER, Test/FitTest/CenterLeft.pdf",
+        "CENTER, CENTER, Test/FitTest/CenterCenter.pdf",
+        "RIGHT, CENTER, Test/FitTest/CenterRight.pdf",
+        "LEFT, BOTTOM, Test/FitTest/BottomLeft.pdf",
+        "CENTER, BOTTOM, Test/FitTest/BottomCenter.pdf",
+        "RIGHT, BOTTOM, Test/FitTest/BottomRight.pdf"
     })
     public void position(Fit.FitPositionX fx, Fit.FitPositionY fy, String filename) {
         Card card = createBoxAround();
 
         Picture picture = new Picture();
-        picture.add("FitTest/miniSquare.png");
+        picture.add("miniSquare.png");
         Fit fit = new Fit();
         fit.setFitPositionX(fx);
         fit.setFitPositionY(fy);
@@ -53,19 +53,19 @@ public class FitTest {
 
     @ParameterizedTest
     @CsvSource({
-        "STRETCH, FitTest/miniRectHigh.png, FitTest/StretchedHigh.pdf",
-        "STRETCH, FitTest/miniRectWide.png, FitTest/StretchedWide.pdf",
-        "STRETCH, FitTest/miniSquare.png, FitTest/StretchedSquare.pdf",
-        "FIT_WIDTH, FitTest/miniRectHigh.png, FitTest/FitWidthHigh.pdf",
-        "FIT_WIDTH, FitTest/miniRectWide.png, FitTest/FitWidthWide.pdf",
-        "FIT_WIDTH, FitTest/miniSquare.png, FitTest/FitWidthSquare.pdf",
-        "FIT_HEIGHT, FitTest/miniRectHigh.png, FitTest/FitHeightHigh.pdf",
-        "FIT_HEIGHT, FitTest/miniRectWide.png, FitTest/FitHeightWide.pdf",
-        "FIT_HEIGHT, FitTest/miniSquare.png, FitTest/FitHeightSquare.pdf",
-        "SCALE, FitTest/miniRectHigh.png, FitTest/ScaledHigh.pdf",
-        "SCALE, FitTest/miniRectWide.png, FitTest/ScaledWide.pdf",
-        "SCALE, FitTest/miniSquare.png, FitTest/ScaledSquare.pdf",
-        "ORIGINAL, FitTest/miniRectHigh.png, FitTest/OriginalHigh.pdf",
+        "STRETCH, miniRectHigh.png, Test/FitTest/StretchedHigh.pdf",
+        "STRETCH, miniRectWide.png, Test/FitTest/StretchedWide.pdf",
+        "STRETCH, miniSquare.png, Test/FitTest/StretchedSquare.pdf",
+        "FIT_WIDTH, miniRectHigh.png, Test/FitTest/FitWidthHigh.pdf",
+        "FIT_WIDTH, miniRectWide.png, Test/FitTest/FitWidthWide.pdf",
+        "FIT_WIDTH, miniSquare.png, Test/FitTest/FitWidthSquare.pdf",
+        "FIT_HEIGHT, miniRectHigh.png, Test/FitTest/FitHeightHigh.pdf",
+        "FIT_HEIGHT, miniRectWide.png, Test/FitTest/FitHeightWide.pdf",
+        "FIT_HEIGHT, miniSquare.png, Test/FitTest/FitHeightSquare.pdf",
+        "SCALE, miniRectHigh.png, Test/FitTest/ScaledHigh.pdf",
+        "SCALE, miniRectWide.png, Test/FitTest/ScaledWide.pdf",
+        "SCALE, miniSquare.png, Test/FitTest/ScaledSquare.pdf",
+        "ORIGINAL, miniRectHigh.png, Test/FitTest/OriginalHigh.pdf",
     })
     public void bySides(Fit.FitType ft, String imagePath, String filename) {
         Card card = createBoxAround();

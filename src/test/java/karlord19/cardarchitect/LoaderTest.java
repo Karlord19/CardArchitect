@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class LoaderTest {
     @Test
     public void loaderTest() {
-        CsvLoader loader = new CsvLoader("src/test/resources/karlord19/cardarchitect/LoaderTest/test.csv");
+        CsvLoader loader = new CsvLoader("src/test/resources/karlord19/cardarchitect/textpictureloader.csv");
         Picture picture = new Picture();
         Text text = new Text();
         loader.addColumn("picture", picture);
@@ -20,6 +20,6 @@ public class LoaderTest {
         card.numberOfCards = 6;
 
         DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.drawDeck(card, "LoaderTest/test.pdf");
+        deckDrawer.drawDeck(card, "Test/Loader.pdf");
     }
 }

@@ -6,8 +6,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class TextTest {
     @ParameterizedTest
     @CsvSource({
-        "Short, TextTest/Short.pdf",
-        "This is a long text, TextTest/Long.pdf"
+        "Short, Test/TextTest/Short.pdf",
+        "This is a long text, Test/TextTest/Long.pdf"
     })
     public void basicText(String string, String filename) {
         Card card = FitTest.createBoxAround();
@@ -22,9 +22,9 @@ public class TextTest {
 
     @ParameterizedTest
     @CsvSource({
-        "CENTER, CENTER, TextTest/MultilineCenterCenter.pdf",
-        "LEFT, BOTTOM, TextTest/MultilineLeftBottom.pdf",
-        "RIGHT, TOP, TextTest/MultilineRightTop.pdf"
+        "CENTER, CENTER, Test/TextTest/MultilineCenterCenter.pdf",
+        "LEFT, BOTTOM, Test/TextTest/MultilineLeftBottom.pdf",
+        "RIGHT, TOP, Test/TextTest/MultilineRightTop.pdf"
     })
     public void multilineText(Fit.FitPositionX x, Fit.FitPositionY y, String filename) {
         Card card = FitTest.createBoxAround();
@@ -43,9 +43,9 @@ public class TextTest {
 
     @ParameterizedTest
     @CsvSource({
-        "This text should be split into multiple lines, TextTest/WrapEasy.pdf",
-        "This text contains a verylongwordthatshouldNOTbesplitbutcliped, TextTest/WrapWide.pdf",
-        "This text is very long so that it should overflow the bounding box and be cliped but I cant be sure so I will write a bit more words, TextTest/WrapHigh.pdf"
+        "This text should be split into multiple lines, Test/TextTest/WrapEasy.pdf",
+        "This text contains a verylongwordthatshouldNOTbesplitbutcliped, Test/TextTest/WrapWide.pdf",
+        "This text is very long so that it should overflow the bounding box and be cliped but I cant be sure so I will write a bit more words, Test/TextTest/WrapHigh.pdf"
     })
     public void wrapText(String string, String filename) {
         Card card = FitTest.createBoxAround();
