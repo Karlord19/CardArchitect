@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Grid {
-    private static class Rectangle {
+    public static class Rectangle {
         public int startRow;
         public int startColumn;
         public int endRow;
