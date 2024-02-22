@@ -28,7 +28,10 @@ public class PDFManager {
     public void close() throws Exception {
         contentStream.close();
         File f = new File(file);
-        if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+        {
+            File parent = f.getParentFile();
+            if (parent != null && !parent.exists()) parent.mkdirs();
+        }
         document.save(file);
         document.close();
     }
