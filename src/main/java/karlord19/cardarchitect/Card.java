@@ -8,7 +8,6 @@ public class Card implements Drawable {
     private int rows;
     private int columns;
     private Grid grid;
-    public int numberOfCards = 1; // create autodetection of number of cards; use numbers of drawables
     private static final Logger logger = Logger.getLogger(Card.class.getName());
 
     public Card(int rows, int columns) {

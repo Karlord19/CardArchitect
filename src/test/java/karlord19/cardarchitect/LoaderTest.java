@@ -17,9 +17,8 @@ public class LoaderTest {
         card.add(picture, "picture", 1, 0);
         card.setHeights(new int[]{20000, 35000});
         card.setWidths(new int[]{44444});
-        card.numberOfCards = 6;
 
         DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.drawDeck(card, "Test/Loader.pdf");
+        deckDrawer.drawDeck(card, "Test/Loader.pdf", 6);
     }
 }

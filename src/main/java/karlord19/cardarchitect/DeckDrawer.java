@@ -37,7 +37,7 @@ public class DeckDrawer {
         }
         return space;
     }
-    private void drawPage(int cardWidth, int cardHeight, int cardsInRow, int cardsInColumn, int rowSpace, int columnSpace, int pageNumber, Card card, PDFManager pdf, int remaindingCards) {
+    private void drawPage(int cardWidth, int cardHeight, int cardsInRow, int cardsInColumn, int rowSpace, int columnSpace, int pageNumber, Card[] cardLayers, PDFManager pdf, int remaindingCards) {
         for (int c = 0; c < cardsInColumn; c++) {
             for (int r = 0; r < cardsInRow & remaindingCards > 0; r++) {
                 PositionedArea pa = new PositionedArea(
@@ -45,15 +45,28 @@ public class DeckDrawer {
                     pdf.getPrintPA().pos.y + c * (cardHeight + columnSpace),
                     cardWidth,
                     cardHeight);
-                card.draw(pa, pageNumber * cardsInRow * cardsInColumn + c * cardsInRow + r, pdf);
+                for (Card card : cardLayers) {
+                    card.draw(pa, pageNumber * cardsInRow * cardsInColumn + c * cardsInRow + r, pdf);
+                }
                 remaindingCards--;
             }
         }
     }
+    public void drawDeck(Card card, String pdfPath, int numberOfCards) {
+        drawDeck(new Card[] {card}, pdfPath, numberOfCards);
+    }
     public void drawDeck(Card card, String pdfPath) {
+        drawDeck(new Card[] {card}, pdfPath, 1);
+    }
+    /**
+     * Draw a deck of cards in a PDF file.
+     * @param cardLayers Array of cards to draw. The first card will be the bottom layer and the last card will be the top layer.
+     * @param pdfPath
+     */
+    public void drawDeck(Card[] cardLayers, String pdfPath, int numberOfCards) {
         PDFManager pdf = new PDFManager(pdfPath, margins);
-        int cardWidth = card.getWidth();
-        int cardHeight = card.getHeight();
+        int cardWidth = cardLayers[0].getWidth();
+        int cardHeight = cardLayers[0].getHeight();
         int cardsInRow = cardsInLine(horizontalSpace, cardWidth, pdf.getPrintPA().area.width);
         int cardsInColumn = cardsInLine(verticalSpace, cardHeight, pdf.getPrintPA().area.height);
         int rowSpace = spaceInLine(horizontalSpace, cardWidth, pdf.getPrintPA().area.width, cardsInRow);
@@ -61,8 +74,7 @@ public class DeckDrawer {
         logger.info("Deck drawer will draw " + cardsInRow + " cards in row and " + cardsInColumn + " cards in column.");
         logger.info("Deck drawer will will leave " + rowSpace + " mim horizontaly and " + columnSpace + " mim verticaly between cards.");
         
-        int numberOfPages = (int)Math.ceil((double) card.numberOfCards / (cardsInRow * cardsInColumn));
-        int remaindingCards = card.numberOfCards;
+        int numberOfPages = (int)Math.ceil((double) numberOfCards / (cardsInRow * cardsInColumn));
         for (int i = 0; i < numberOfPages; i++) {
             try {
                 pdf.addPage();
@@ -71,8 +83,8 @@ public class DeckDrawer {
                 e.printStackTrace();
                 return;
             }
-            drawPage(cardWidth, cardHeight, cardsInRow, cardsInColumn, rowSpace, columnSpace, i, card, pdf, remaindingCards);
-            remaindingCards -= cardsInRow * cardsInColumn;
+            drawPage(cardWidth, cardHeight, cardsInRow, cardsInColumn, rowSpace, columnSpace, i, cardLayers, pdf, numberOfCards);
+            numberOfCards -= cardsInRow * cardsInColumn;
         }
 
         try {

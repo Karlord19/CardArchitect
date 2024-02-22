@@ -11,10 +11,9 @@ public class DeckDrawerTest {
         fit.setFitType(Fit.FitType.STRETCH);
         picture.setFit(fit);
         card.add(picture);
-        card.numberOfCards = 20;
 
         DeckDrawer deckDrawer = new DeckDrawer(10005, 20005, 30005, 40005);
-        deckDrawer.drawDeck(card, "Test/DeckDrawerTest/Margins.pdf");
+        deckDrawer.drawDeck(card, "Test/DeckDrawerTest/Margins.pdf", 20);
     }
 
     @Test
@@ -25,11 +24,10 @@ public class DeckDrawerTest {
         fit.setFitType(Fit.FitType.STRETCH);
         picture.setFit(fit);
         card.add(picture);
-        card.numberOfCards = 20;
 
         DeckDrawer deckDrawer = new DeckDrawer();
         deckDrawer.horizontalSpace = 10005;
         deckDrawer.verticalSpace = 20005;
-        deckDrawer.drawDeck(card, "Test/DeckDrawerTest/Space.pdf");
+        deckDrawer.drawDeck(card, "Test/DeckDrawerTest/Space.pdf", 20);
     }
 }

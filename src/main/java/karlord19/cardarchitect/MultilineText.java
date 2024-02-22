@@ -50,7 +50,7 @@ public class MultilineText extends Text {
         }
         float heightSum = lines.length * fontSize;
         if (heightSum > boundingBox.area.height) {
-            System.out.println("Warning: text is too high to fit in bounding box." + lines);
+            System.out.println("Warning: text is too high to fit in bounding box." + lines.toString());
         }
         PDFManager.PDFPA printPA = fit.givePositionedArea(new PDFManager.PDFArea(maxWidth, heightSum), boundingBox);
         try {
