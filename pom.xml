@@ -8,9 +8,11 @@
     <artifactId>cardarchitect</artifactId>
     <version>0.1</version>
     <properties>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
     </properties>
     <dependencies>
 
@@ -43,19 +45,36 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
+
                     <execution>
-                        <id>basictemplate</id>
+                        <id>basic</id>
                         <goals>
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>karlord19.cardarchitect.example.BasicTemplate</mainClass>
+                            <mainClass>karlord19.cardarchitect.example.Basic</mainClass>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>multiwloader</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>karlord19.cardarchitect.example.MultilayeredWithLoader</mainClass>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
         </plugins>
