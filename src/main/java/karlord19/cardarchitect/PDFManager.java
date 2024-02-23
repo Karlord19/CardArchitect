@@ -4,6 +4,7 @@ import java.io.File;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.PDPage;
 
 public class PDFManager {
@@ -92,5 +93,13 @@ public class PDFManager {
         float width = Metrics.m2p(pa.area.width);
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
+    }
+    public static class LineStyle{
+        public int width;
+        public PDColor color;
+        public LineStyle(int width, PDColor color){
+            this.width = width;
+            this.color = color;
+        }
     }
 }
