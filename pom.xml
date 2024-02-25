@@ -66,12 +66,22 @@
                     </execution>
 
                     <execution>
-                        <id>multiwloader</id>
+                        <id>multi</id>
                         <goals>
                             <goal>java</goal>
                         </goals>
                         <configuration>
                             <mainClass>karlord19.cardarchitect.example.MultilayeredWithLoader</mainClass>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>inner</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>karlord19.cardarchitect.example.InnerCard</mainClass>
                         </configuration>
                     </execution>
 
