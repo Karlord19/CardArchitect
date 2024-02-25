@@ -2,8 +2,6 @@ package karlord19.cardarchitect;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
-import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
-import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 
 public class Card implements Drawable {
     private HashMap<String, Drawable> namedElements = new HashMap<String, Drawable>();
@@ -81,8 +79,13 @@ public class Card implements Drawable {
      * Just for interface
      * Do not use, it does nothing
      */
-    public void add(String thing) {
-        grid.setAroundBorder(new PDFManager.LineStyle(1000, new PDColor(new float[]{1, 0, 0}, PDDeviceRGB.INSTANCE)), thing);
+    public void add(String thing) {}
+
+    public void addBorder(String name, LineStyle ls, Direction dir) {
+        grid.setAroundBorder(ls, name, dir);
+    }
+    public void addBorderAround(String name, LineStyle ls) {
+        grid.setAroundBorder(ls, name);
     }
     
     public void draw(PositionedArea pa, int index, PDFManager pdf) {

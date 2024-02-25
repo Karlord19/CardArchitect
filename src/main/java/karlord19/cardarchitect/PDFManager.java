@@ -94,12 +94,9 @@ public class PDFManager {
         float height = Metrics.m2p(pa.area.height);
         return new PDFPA(x, y, width, height);
     }
-    public static class LineStyle{
-        public int width;
-        public PDColor color;
-        public LineStyle(int width, PDColor color){
-            this.width = width;
-            this.color = color;
-        }
+
+    public void setLineStyle(LineStyle ls) throws Exception {
+        contentStream.setLineWidth(Metrics.m2p(ls.width));
+        contentStream.setStrokingColor(ls.color);
     }
 }
