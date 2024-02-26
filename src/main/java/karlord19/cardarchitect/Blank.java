@@ -1,9 +1,9 @@
 package karlord19.cardarchitect;
 
-public class Blank implements Drawable {
-    public Blank() {}
-    public void draw(PositionedArea pa, int index, PDFManager pdfManager) {
-        // Do nothing
-    }
-    public void add(String s) {}
-}
+/**
+ * Blank
+ * 
+ * A drawable that does nothing.
+ * Good for managing borders.
+ */
+public class Blank extends AbstractDrawable {}

@@ -17,10 +17,10 @@ public class MultilayeredWithLoader {
         WrapText text = new WrapText();
         text.setFit(fitCenter);
 
-        CsvLoader loader = new CsvLoader("src/main/resources/karlord19/cardarchitect/example/multilayered.csv");
+        CsvLoader loader = new CsvLoader();
         loader.addColumn("picture", picture);
         loader.addColumn("text", text);
-        loader.load();
+        loader.load("src/main/resources/karlord19/cardarchitect/example/multilayered.csv");
 
         Picture cross = new Picture("example/pics/redCross.png");
         cross.setFit(fitStretch);
@@ -35,7 +35,7 @@ public class MultilayeredWithLoader {
         over.add(cross);
 
         DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.horizontalSpace = 15000;
+        deckDrawer.setHorizontalSpace(15000);
         deckDrawer.drawDeck(new Card[] { back, top, over }, "MultilayeredWithLoader.pdf", 10);
     }
 }

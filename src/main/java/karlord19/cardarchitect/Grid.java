@@ -3,21 +3,22 @@ package karlord19.cardarchitect;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import karlord19.cardarchitect.PDFManager.PDFPA;
 
-public class Grid {
-    public static class Rectangle {
-        public int startRow;
-        public int startColumn;
-        public int endRow;
-        public int endColumn;
-        public Rectangle(int startRow, int startColumn, int endRow, int endColumn) {
+class Grid {
+    private static class Rectangle {
+        int startRow;
+        int startColumn;
+        int endRow;
+        int endColumn;
+        Rectangle(int startRow, int startColumn, int endRow, int endColumn) {
             this.startRow = startRow;
             this.startColumn = startColumn;
             this.endRow = endRow;
             this.endColumn = endColumn;
         }
     }
-    private Logger logger = Logger.getLogger(Grid.class.getName());
+    private static final Logger logger = Logger.getLogger(Grid.class.getName());
     private boolean[][] taken;
     private int[] widths;
     private Integer width = null;
@@ -27,7 +28,7 @@ public class Grid {
     private final int rows;
     private HashMap<String, Rectangle> namedRectangles;
     private PositionedArea gridPA;
-    public Grid(int rows, int columns) {
+    Grid(int rows, int columns) {
         taken = new boolean[rows][columns];
         widths = new int[columns];
         heights = new int[rows];
@@ -37,10 +38,10 @@ public class Grid {
         this.rows = rows;
         this.columns = columns;
     }
-    public Grid() {
+    Grid() {
         this(1, 1);
     }
-    public void setWidths(int[] widths) {
+    void setWidths(int[] widths) {
         if (widths.length != columns) {
             logger.severe("Bad number of widths. Actual: " + widths.length + " expected: " + columns);
             return;
@@ -48,7 +49,7 @@ public class Grid {
         this.widths = widths;
         width = null;
     }
-    public void setHeights(int[] heights) {
+    void setHeights(int[] heights) {
         if (heights.length != rows) {
             logger.severe("Bad number of heights. Actual: " + heights.length + " expected: " + rows);
             return;
@@ -56,7 +57,7 @@ public class Grid {
         this.heights = heights;
         height = null;
     }
-    public int getWidth() {
+    int getWidth() {
         if (width != null) {
             return width;
         }
@@ -66,7 +67,7 @@ public class Grid {
         }
         return width;
     }
-    public int getHeight() {
+    int getHeight() {
         if (height != null) {
             return height;
         }
@@ -76,7 +77,7 @@ public class Grid {
         }
         return height;
     }
-    public boolean add(String name, int startRow, int startColumn, int endRow, int endColumn) {
+    boolean add(String name, int startRow, int startColumn, int endRow, int endColumn) {
         if (startRow < 0 || startRow >= rows) {
             logger.severe(name + " has bad start row.");
             return false;
@@ -114,10 +115,10 @@ public class Grid {
         }
         return true;
     }
-    public void setPA(PositionedArea pa) {
+    void setPA(PositionedArea pa) {
         gridPA = pa;
     }
-    public PositionedArea getPA(String name) throws Exception {
+    PositionedArea getPA(String name) throws Exception {
         Rectangle na = namedRectangles.get(name);
         if (na == null) {
             throw new Exception("No such named area " + name + ".");
@@ -156,7 +157,7 @@ public class Grid {
      */
     private LineStyle[][] bordersVer;
 
-    public void setHorBorder(LineStyle ls, int row, int startColumn, int endColumn) {
+    private void setHorBorder(LineStyle ls, int row, int startColumn, int endColumn) {
         if (row < 0 || row >= (rows + 1)) {
             logger.severe("Bad row for horizontal border.");
             return;
@@ -169,7 +170,7 @@ public class Grid {
             bordersHor[row][i] = ls;
         }
     }
-    public void setVerBorder(LineStyle ls, int column, int startRow, int endRow) {
+    private void setVerBorder(LineStyle ls, int column, int startRow, int endRow) {
         if (column < 0 || column >= (columns + 1)) {
             logger.severe("Bad column for vertical border.");
             return;
@@ -182,8 +183,7 @@ public class Grid {
             bordersVer[column][i] = ls;
         }
     }
-
-    public void setAroundBorder(LineStyle lineStyle, String name, Direction dir) {
+    void setAroundBorder(LineStyle lineStyle, String name, Direction dir) {
         Rectangle rectangle = namedRectangles.get(name);
         if (rectangle == null) {
             logger.severe("No such named area " + name + ".");
@@ -204,7 +204,7 @@ public class Grid {
                 break;
         }
     }
-    public void setAroundBorder(LineStyle lineStyle, String name) {
+    void setAroundBorder(LineStyle lineStyle, String name) {
         setAroundBorder(lineStyle, name, Direction.TOP);
         setAroundBorder(lineStyle, name, Direction.BOTTOM);
         setAroundBorder(lineStyle, name, Direction.LEFT);
@@ -214,12 +214,12 @@ public class Grid {
         PDPageContentStream contentStream = pdf.getContentStream();
         pdf.setLineStyle(ls);
         PositionedArea pa = new PositionedArea(fromX, fromY, difX, difY);
-        PDFManager.PDFPA pdfpa = pdf.transform(pa);
+        PDFPA pdfpa = pdf.transform(pa);
         contentStream.moveTo(pdfpa.pos.x, pdfpa.pos.y);
         contentStream.lineTo(pdfpa.pos.x + pdfpa.area.width, pdfpa.pos.y + pdfpa.area.height);
         contentStream.stroke();
     }
-    public void drawBorders(PDFManager pdf) {
+    void drawBorders(PDFManager pdf) {
         int y = gridPA.pos.y;
         for (int row = 0; row < bordersHor.length; row++) {
             int x = gridPA.pos.x;

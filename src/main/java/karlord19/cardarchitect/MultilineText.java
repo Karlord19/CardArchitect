@@ -2,21 +2,43 @@ package karlord19.cardarchitect;
 
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
+/**
+ * MultilineText
+ * 
+ * A class that represents a multiline text.
+ */
 public class MultilineText extends Text {
     
+    /**
+     * Create a MultilineText.
+     */
     public MultilineText() {
         super();
     }
+
+    /**
+     * Create a MultilineText with a text.
+     * @param text
+     */
     public MultilineText(String text) {
         super(text);
     }
+
+    /**
+     * Create a MultilineText with texts.
+     * @param texts
+     */
     public MultilineText(String[] texts) {
         super(texts);
     }
 
     protected Fit fit = new Fit();
+
     /** 
+     * Set the FitType of the MultilineText.
+     * 
      * The FitType is set to ORIGINAL, because the text is never scaled 
+     * @param fit
      */
     public void setFit(Fit fit) {
         this.fit = fit;

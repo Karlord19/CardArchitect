@@ -4,19 +4,40 @@ import java.util.logging.Logger;
 
 public class DeckDrawer {
     private int[] margins = new int[] {5000, 5000, 5000, 5000}; // top, right, bottom, left
-    /**
-     * Horizontal space between cards in micrometers.
-     * If null, it will be calculated to fit the cards in the page.
-     */
-    public Integer horizontalSpace = null;
-    /**
-     * Vertical space between cards in micrometers.
-     * If null, it will be calculated to fit the cards in the page.
-     */
-    public Integer verticalSpace = null;
     private static final Logger logger = Logger.getLogger(DeckDrawer.class.getName());
+    
+    /**
+     * Set horizontal space between cards in micrometers.
+     * @param horizontalSpace
+     */
+    public void setHorizontalSpace(int horizontalSpace) {
+        this.horizontalSpace = horizontalSpace;
+    }
 
+    private int horizontalSpace = 5000;
+
+    /**
+     * Set vertical space between cards in micrometers.
+     * @param verticalSpace
+     */
+    public void setVerticalSpace(int verticalSpace) {
+        this.verticalSpace = verticalSpace;
+    }
+
+    private int verticalSpace = 5000;
+
+    /**
+     * Create a DeckDrawer with default margins: 5000 micrometers in all directions.
+     */
     public DeckDrawer() {}
+
+    /**
+     * Create a DeckDrawer with custom margins.
+     * @param top
+     * @param right
+     * @param bottom
+     * @param left
+     */
     public DeckDrawer(int top, int right, int bottom, int left) {
         setMargins(top, right, bottom, left);
     }
@@ -24,7 +45,6 @@ public class DeckDrawer {
     private void setMargins(int top, int right, int bottom, int left) {
         margins = new int[] { top, right, bottom, left };
     }
-
     private static int cardsInLine(Integer space, int cardSize, int pageSize) {
         if (space == null) {
             return (int)((double) pageSize / cardSize);
@@ -52,12 +72,26 @@ public class DeckDrawer {
             }
         }
     }
+
+    /**
+     * Draw a deck of cards in a PDF file.
+     * @param card
+     * @param pdfPath
+     * @param numberOfCards
+     */
     public void drawDeck(Card card, String pdfPath, int numberOfCards) {
         drawDeck(new Card[] {card}, pdfPath, numberOfCards);
     }
+
+    /**
+     * Draw one card in a PDF file.
+     * @param card
+     * @param pdfPath
+     */
     public void drawDeck(Card card, String pdfPath) {
         drawDeck(new Card[] {card}, pdfPath, 1);
     }
+    
     /**
      * Draw a deck of cards in a PDF file.
      * @param cardLayers Array of cards to draw. The first card will be the bottom layer and the last card will be the top layer.

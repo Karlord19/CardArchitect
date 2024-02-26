@@ -10,32 +10,59 @@ import java.util.logging.Logger;
  * Is meant to be derived from, plus override draw method
  * Basic behaviour is to draw a single line with no formatting and no endlines
  */
-public class Text implements Drawable {
+public class Text extends AbstractDrawable {
 
     protected ArrayList<String> texts = new ArrayList<String>();
     protected PDFont font = PDType1Font.HELVETICA;
     protected int fontSize = 30;
     protected Logger logger = Logger.getLogger(Text.class.getName());
 
+    /**
+     * Create a Text.
+     */
     public Text() {}
+
+    /**
+     * Create a Text with a text.
+     * @param text
+     */
     public Text(String text) {
         texts.add(text);
     }
+
+    /**
+     * Create a Text with texts.
+     * @param texts
+     */
     public Text(String[] texts) {
         for (String text : texts) {
             this.texts.add(text);
         }
     }
 
+    /**
+     * Add a text to the collection.
+     * @param text
+     */
     public void add(String text) {
         texts.add(text);
     }
+
+    /**
+     * Add texts to the collection.
+     * @param texts
+     */
     public void addTexts(String[] texts) {
         for (String text : texts) {
             this.texts.add(text);
         }
     }
 
+    /**
+     * Set the font and size of the text.
+     * @param font
+     * @param size
+     */
     public void setFont(PDFont font, int size) {
         this.font = font;
         this.fontSize = size;
@@ -60,10 +87,10 @@ public class Text implements Drawable {
     }
 
     /**
-     * Wrapper for drawing text
-     * Try to be final
+     * Wrapper for drawing text.
      */
-    public final void draw(PositionedArea pa, int index, PDFManager pdf) {
+    @Override
+    final void draw(PositionedArea pa, int index, PDFManager pdf) {
         if (texts.size() == 0) {
             logger.warning("No texts to draw.");
             return;

@@ -2,8 +2,25 @@ package karlord19.cardarchitect;
 
 import java.util.logging.Logger;
 
+import karlord19.cardarchitect.PDFManager.PDFArea;
+import karlord19.cardarchitect.PDFManager.PDFPA;
+
+/**
+ * Fit
+ * 
+ * Class that represents the fit of an image in a bounding box.
+ * Can be used for multiple Drawable objects at once.
+ */
 public class Fit {
-    private Logger logger = Logger.getLogger(Fit.class.getName());
+    private static final Logger logger = Logger.getLogger(Fit.class.getName());
+
+    /**
+     * FitType
+     * 
+     * Enum for the type of fit to be used.
+     * STRETCH will stretch the image to fit the bounding box without remainer.
+     * SCALE will scale the image to fit the bounding box, keeping the aspect ratio.
+     */
     public enum FitType {
         FIT_WIDTH,
         FIT_HEIGHT,
@@ -11,38 +28,73 @@ public class Fit {
         STRETCH,
         ORIGINAL
     };
+
     private FitType fitType;
+
+    /**
+     * Set the fit type.
+     * @param fitType
+     */
     public void setFitType(FitType fitType) {
         this.fitType = fitType;
     }
 
+    /**
+     * FitPositionX
+     * 
+     * Enum for the horizontal position of the image in the bounding box.
+     */
     public enum FitPositionX {
         LEFT,
         CENTER,
         RIGHT
     };
+
     private FitPositionX fitPositionX;
+
+    /**
+     * Set the horizontal position of the image in the bounding box.
+     * @param fitPositionX
+     */
     public void setFitPositionX(FitPositionX fitPositionX) {
         this.fitPositionX = fitPositionX;
     }
 
+    /**
+     * FitPositionY
+     * 
+     * Enum for the vertical position of the image in the bounding box.
+     */
     public enum FitPositionY {
         TOP,
         CENTER,
         BOTTOM
     };
+
     private FitPositionY fitPositionY;
+
+    /**
+     * Set the vertical position of the image in the bounding box.
+     * @param fitPositionY
+     */
     public void setFitPositionY(FitPositionY fitPositionY) {
         this.fitPositionY = fitPositionY;
     }
 
+    /**
+     * Fit
+     * 
+     * Constructor for the Fit class.
+     * Sets the default values for the fit type and position.
+     * Type is set to SCALE and position to CENTER.
+     */
     public Fit() {
         fitType = FitType.SCALE;
         fitPositionX = FitPositionX.CENTER;
         fitPositionY = FitPositionY.CENTER;
     }
 
-    private PDFManager.PDFArea giveArea(PDFManager.PDFArea imgArea, PDFManager.PDFArea boundingBox) {
+    private PDFArea giveArea(PDFArea imgArea, PDFArea boundingBox) {
         float width = 0;
         float height = 0;
         switch (fitType) {
@@ -80,13 +132,13 @@ public class Fit {
             default:
                 break;
         }
-        return new PDFManager.PDFArea(width, height);
+        return new PDFArea(width, height);
     }
 
-    public PDFManager.PDFPA givePositionedArea(PDFManager.PDFArea imgArea, PDFManager.PDFPA boundingBox) {
+    PDFPA givePositionedArea(PDFArea imgArea, PDFPA boundingBox) {
         float x = 0;
         float y = 0;
-        PDFManager.PDFArea givenArea = giveArea(imgArea, boundingBox.area);
+        PDFArea givenArea = giveArea(imgArea, boundingBox.area);
         switch (fitPositionX) {
             case LEFT:
                 x = boundingBox.pos.x;

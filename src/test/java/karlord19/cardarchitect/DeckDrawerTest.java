@@ -26,8 +26,8 @@ public class DeckDrawerTest {
         card.add(picture);
 
         DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.horizontalSpace = 10005;
-        deckDrawer.verticalSpace = 20005;
+        deckDrawer.setHorizontalSpace(10005);
+        deckDrawer.setVerticalSpace(20005);
         deckDrawer.drawDeck(card, "Test/DeckDrawerTest/Space.pdf", 20);
     }
 }

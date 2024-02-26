@@ -15,17 +15,30 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
  * 
  * A class that represents a collection of pictures on one spot.
  */
-public class Picture implements Drawable {
+public class Picture extends AbstractDrawable {
 
     private File[] pictures = new File[0];
     private Fit fit = new Fit();
-    private Logger logger = Logger.getLogger(Picture.class.getName());
+    private static final Logger logger = Logger.getLogger(Picture.class.getName());
 
+    /**
+     * Create a Picture.
+     */
     public Picture() {}
+
+    /**
+     * Create a Picture with a picture.
+     * @param path
+     */
     public Picture(String path) {
         add(path);
     }
 
+    /**
+     * Add a picture to the collection.
+     * @param path
+     */
+    @Override
     public void add(String path) {
         Path real_path;
         try {
@@ -42,6 +55,11 @@ public class Picture implements Drawable {
         this.pictures = new_pictures;
     }
 
+    /**
+     * Add all pictures from a directory that match the regex to the collection.
+     * @param dirPath
+     * @param regex
+     */
     public void addDir(String dirPath, String regex) {
         File dir;
         try {
@@ -71,11 +89,15 @@ public class Picture implements Drawable {
         this.pictures = new_pictures;
     }
 
+    /**
+     * Set the Fit of the pictures.
+     * @param fit
+     */
     public void setFit(Fit fit) {
         this.fit = fit;
     }
     
-    public void draw(PositionedArea pa, int index, PDFManager pdf) {
+    void draw(PositionedArea pa, int index, PDFManager pdf) {
         if (pictures.length == 0) {
             logger.warning("No pictures to draw.");
             return;

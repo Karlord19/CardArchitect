@@ -3,14 +3,32 @@ package karlord19.cardarchitect;
 import java.util.ArrayList;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
+/**
+ * WrapText
+ * 
+ * A class that represents a text that has automatic line wrapping.
+ */
 public class WrapText extends MultilineText {
 
+    /**
+     * Create a WrapText.
+     */
     public WrapText() {
         super();
     }
+
+    /**
+     * Create a WrapText with a text.
+     * @param text
+     */
     public WrapText(String text) {
         super(text);
     }
+
+    /**
+     * Create a WrapText with texts.
+     * @param texts
+     */
     public WrapText(String[] texts) {
         super(texts);
     }
