@@ -2,9 +2,6 @@ package karlord19.cardarchitect.example;
 
 import karlord19.cardarchitect.*;
 
-/**
- * BasicTemplate
- */
 public class Basic {
 
     public static void main(String[] args) {

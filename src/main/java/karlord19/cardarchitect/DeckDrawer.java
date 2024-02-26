@@ -2,6 +2,15 @@ package karlord19.cardarchitect;
 
 import java.util.logging.Logger;
 
+/**
+ * DeckDrawer
+ * 
+ * A class that draws a deck of cards in a PDF file.
+ * Cards are drawn in a grid.
+ * Margins can be set.
+ * Space between cards can be set.
+ * Can be used multiple times to draw different decks.
+ */
 public class DeckDrawer {
     private int[] margins = new int[] {5000, 5000, 5000, 5000}; // top, right, bottom, left
     private static final Logger logger = Logger.getLogger(DeckDrawer.class.getName());

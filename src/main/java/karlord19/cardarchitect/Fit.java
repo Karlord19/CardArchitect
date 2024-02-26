@@ -1,7 +1,6 @@
 package karlord19.cardarchitect;
 
 import java.util.logging.Logger;
-
 import karlord19.cardarchitect.PDFManager.PDFArea;
 import karlord19.cardarchitect.PDFManager.PDFPA;
 
