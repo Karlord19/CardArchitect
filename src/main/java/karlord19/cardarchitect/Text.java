@@ -64,7 +64,9 @@ public class Text extends AbstractDrawable {
      * @param size
      */
     public void setFont(PDFont font, int size) {
-        this.font = font;
+        if (font != null) {
+            this.font = font;
+        }
         this.fontSize = size;
     }
 

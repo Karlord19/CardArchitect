@@ -1,13 +1,18 @@
 package karlord19.cardarchitect;
 
+import com.twelvemonkeys.imageio.plugins.webp.WebPImageReaderSpi;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.spi.IIORegistry;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 /**
@@ -16,6 +21,10 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
  * A class that represents a collection of pictures on one spot.
  */
 public class Picture extends AbstractDrawable {
+
+    static {
+        IIORegistry.getDefaultInstance().registerServiceProvider(new WebPImageReaderSpi());
+    }
 
     private File[] pictures = new File[0];
     private Fit fit = new Fit();
@@ -109,7 +118,8 @@ public class Picture extends AbstractDrawable {
         PDDocument document = pdf.getDocument();
         PDPageContentStream contentStream = pdf.getContentStream();
         try {
-            PDImageXObject image = PDImageXObject.createFromFile(pictures[index].getPath(), document);
+            BufferedImage bufferedImage = ImageIO.read(pictures[index]);
+            PDImageXObject image = LosslessFactory.createFromImage(document, bufferedImage);
             PDFManager.PDFPA boundingBox = pdf.transform(pa);
             PDFManager.PDFPA imageBox = fit.givePositionedArea(new PDFManager.PDFArea(image.getWidth(), image.getHeight()), boundingBox);
             contentStream.saveGraphicsState();
