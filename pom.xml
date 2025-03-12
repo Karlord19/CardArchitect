@@ -91,6 +91,16 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>brneni</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>karlord19.cardarchitect.usage.Brneni</mainClass>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
         </plugins>
