@@ -58,7 +58,7 @@ public class Picture extends AbstractDrawable {
     /**
      * Add all pictures from a directory that match the regex to the collection.
      * @param dirPath
-     * @param regex
+     * @param regex The regex, or null to match all files.
      */
     public void addDir(String dirPath, String regex) {
         File dir;
@@ -75,7 +75,7 @@ public class Picture extends AbstractDrawable {
         File[] matching = new File[dirFiles.length];
         int i = 0;
         for (File file : dir.listFiles()) {
-            if (file.getName().matches(regex)) {
+            if (regex == null || file.getName().matches(regex)) {
                 matching[i] = file;
                 i++;
             }
