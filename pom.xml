@@ -85,6 +85,16 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>tondaovcecihly</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>karlord19.cardarchitect.usage.TondaOvceCihly</mainClass>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
         </plugins>
