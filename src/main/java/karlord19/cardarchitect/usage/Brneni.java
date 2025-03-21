@@ -7,7 +7,8 @@ import java.io.File;
 
 public class Brneni {
     public static void main(String[] args) {
-
+        
+        int statsFontSize = 12;
         PDType0Font font;
         try {
             PDDocument document = new PDDocument();
@@ -18,51 +19,57 @@ public class Brneni {
         }
 
         Fit fitStretch = new Fit();
-        fitStretch.setFitType(Fit.FitType.SCALE);
+        fitStretch.setFitType(Fit.FitType.STRETCH);
         Picture picture = new Picture();
         picture.setFit(fitStretch);
 
-        Fit fitBottomLeft = new Fit();
-        fitBottomLeft.setFitPositionX(Fit.FitPositionX.LEFT);
-        fitBottomLeft.setFitPositionY(Fit.FitPositionY.BOTTOM);
-        MultilineText textBottomLeft = new MultilineText();
-        textBottomLeft.setFont(font, 17);
-        textBottomLeft.setFit(fitBottomLeft);
+        Fit fitCenter = new Fit();
+        fitCenter.setFitPositionX(Fit.FitPositionX.CENTER);
+        fitCenter.setFitPositionY(Fit.FitPositionY.CENTER);
 
-        Fit fitBottomRight = new Fit();
-        fitBottomRight.setFitPositionX(Fit.FitPositionX.RIGHT);
-        fitBottomRight.setFitPositionY(Fit.FitPositionY.BOTTOM);
-        MultilineText textBottomRight = new MultilineText();
-        textBottomRight.setFont(font, 17);
-        textBottomRight.setFit(fitBottomRight);
+        MultilineText textName = new MultilineText();
+        textName.setFont(font, statsFontSize);
+        textName.setFit(fitCenter);
+
+        MultilineText separator = new MultilineText("...");
+        separator.setFont(font, statsFontSize);
+        separator.setFit(fitCenter);
+
+        Fit fitRight = new Fit();
+        fitRight.setFitPositionX(Fit.FitPositionX.RIGHT);
+        fitRight.setFitPositionY(Fit.FitPositionY.CENTER);
+
+        MultilineText textType = new MultilineText();
+        textType.setFont(font, statsFontSize);
+        textType.setFit(fitRight);
+
+        Fit fitLeft = new Fit();
+        fitLeft.setFitPositionX(Fit.FitPositionX.LEFT);
+        fitLeft.setFitPositionY(Fit.FitPositionY.CENTER);
+
+        MultilineText textNum = new MultilineText();
+        textNum.setFont(font, statsFontSize);
+        textNum.setFit(fitLeft);
 
         for (int i = 0; i < 10; i++) {
             picture.add("usage/helmet_Turtle_Shell.webp");
-            textBottomLeft.add("želva");
-            textBottomRight.add("4 meč");
+            textName.add("helma z želvy");
+            textType.add("meč");
+            textNum.add("2");
         }
 
-        // Card back = new Card();
-        // back.add(picture);
-        // back.setHeightsEqual(50000);
-        // back.setWidthsEqual(50000);
+        Card card = new Card(3, 3);
+        card.add(picture, "pic", 0, 0, 0, 2);
+        card.add(textName, "name", 1, 0, 1, 2);
+        card.add(textType, "type", 2, 0);
+        card.add(separator, "sep", 2, 1);
+        card.add(textNum, "num", 2, 2);
+        card.setHeights(new int[]{27000, 6000, 6000});
+        card.setWidths(new int[]{15000, 3000, 9000});
 
-        // Card top = new Card();
-        // top.add(textBottomLeft);
-        // top.add(textBottomRight);
-        // top.setHeightsEqual(50000);
-        // top.setWidthsEqual(50000);
-
-        Card card = new Card(2, 2);
-        card.add(picture, "pic", 0, 0, 0, 1);
-        card.add(textBottomLeft, "textBottomLeft", 1, 0);
-        card.add(textBottomRight, "textBottomRight", 1, 1);
-        card.setHeights(new int[]{40000, 10000});
-
-        DeckDrawer deckDrawer = new DeckDrawer(5000, 5000, 5000, 5000);
-        deckDrawer.setHorizontalSpace(2500);
-        deckDrawer.setVerticalSpace(2500);
-        // deckDrawer.drawDeck(new Card[] { back, top }, "Brneni.pdf", 40);
+        DeckDrawer deckDrawer = new DeckDrawer();
+        deckDrawer.setHorizontalSpace(5000);
+        deckDrawer.setVerticalSpace(5000);
         deckDrawer.drawDeck(card, "Brneni.pdf", 12);
     }
 }
