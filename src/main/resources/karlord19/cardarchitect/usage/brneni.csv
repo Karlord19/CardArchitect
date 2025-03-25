@@ -1,0 +1,28 @@
+nazev,picture,typ,cislo
+zlatá helma,usage/Golden_Helmet_JE2_BE2.webp,meč,1
+železná helma,usage/Iron_Helmet_JE2_BE2.webp,meč,2
+diamantová helma,usage/Diamond_Helmet_JE2_BE2.webp,meč,3
+netheritová helma,usage/Netherite_Helmet_JE2_BE1.webp,meč,4
+zlatá zbroj,usage/Golden_Chestplate_JE2_BE2.webp,luk,5
+železná zbroj,usage/Iron_Chestplate_JE2_BE2.webp,luk,6
+diamantová zbroj,usage/Diamond_Chestplate_JE3_BE2.webp,luk,7
+netheritová zbroj,usage/Netherite_Chestplate_JE2_BE1.webp,luk,8
+zlaté kalhoty,usage/Golden_Leggings_JE2_BE2.webp,meč,3
+železné kalhoty,usage/Iron_Leggings_JE2_BE2.webp,meč,4
+diamantové kalhoty,usage/Diamond_Leggings_JE2_BE2.webp,meč,5
+netheritové kalhoty,usage/Netherite_Leggings_JE3_BE2.webp,meč,6
+zlaté boty,usage/Golden_Boots_JE2_BE2.webp,luk,1
+železné boty,usage/Iron_Boots_JE2_BE2.webp,luk,2
+diamantové boty,usage/Diamond_Boots_JE2_BE2.webp,luk,3
+netheritové boty,usage/Netherite_Boots_JE2_BE1.webp,luk,4
+dřevěný meč,usage/Wooden_Sword_JE2_BE2.webp,meč,1
+kamenný meč,usage/Stone_Sword_JE2_BE2.webp,meč,2
+zlatý meč,usage/Golden_Sword_JE3_BE2.webp,meč,3
+železný meč,usage/Iron_Sword_JE2_BE2.webp,meč,5
+diamantový meč,usage/Diamond_Sword_JE3_BE3.webp,meč,6
+netheritový meč,usage/Netherite_Sword_JE2_BE2.webp,meč,7
+nenatažený luk,usage/Bow_JE2_BE1.webp,luk,1
+středně nat. luk,usage/Bow_Pull_0_JE1_BE1.webp,luk,2
+natažený luk,usage/Bow_Pull_1_JE1_BE1.webp,luk,3
+kriticky nat. luk,usage/Bow_Pull_2_JE1_BE1.webp,luk,4
+očarovaný luk,usage/Enchanted_Bow.webp,luk,5

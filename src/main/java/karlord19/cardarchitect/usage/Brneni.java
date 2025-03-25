@@ -8,7 +8,7 @@ import java.io.File;
 public class Brneni {
     public static void main(String[] args) {
         
-        int statsFontSize = 12;
+        int statsFontSize = 10;
         PDType0Font font;
         try {
             PDDocument document = new PDDocument();
@@ -19,7 +19,7 @@ public class Brneni {
         }
 
         Fit fitStretch = new Fit();
-        fitStretch.setFitType(Fit.FitType.STRETCH);
+        fitStretch.setFitType(Fit.FitType.SCALE);
         Picture picture = new Picture();
         picture.setFit(fitStretch);
 
@@ -51,12 +51,12 @@ public class Brneni {
         textNum.setFont(font, statsFontSize);
         textNum.setFit(fitLeft);
 
-        for (int i = 0; i < 10; i++) {
-            picture.add("usage/helmet_Turtle_Shell.webp");
-            textName.add("helma z želvy");
-            textType.add("meč");
-            textNum.add("2");
-        }
+        CsvLoader loader = new CsvLoader();
+        loader.addColumn("nazev", textName);
+        loader.addColumn("picture", picture);
+        loader.addColumn("typ", textType);
+        loader.addColumn("cislo", textNum);
+        loader.load("src/main/resources/karlord19/cardarchitect/usage/brneni.csv");
 
         Card card = new Card(3, 3);
         card.add(picture, "pic", 0, 0, 0, 2);
@@ -64,12 +64,14 @@ public class Brneni {
         card.add(textType, "type", 2, 0);
         card.add(separator, "sep", 2, 1);
         card.add(textNum, "num", 2, 2);
-        card.setHeights(new int[]{27000, 6000, 6000});
-        card.setWidths(new int[]{15000, 3000, 9000});
+
+        int textHight = 5000;
+        card.setHeights(new int[]{30000 - 2*textHight, textHight, textHight});
+        card.setWidths(new int[]{30000 - 3000 - 11000, 3000, 11000});
 
         DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.setHorizontalSpace(5000);
-        deckDrawer.setVerticalSpace(5000);
-        deckDrawer.drawDeck(card, "Brneni.pdf", 12);
+        deckDrawer.setHorizontalSpace(3000);
+        deckDrawer.setVerticalSpace(3000);
+        deckDrawer.drawDeck(card, "Brneni.pdf", 27);
     }
 }
