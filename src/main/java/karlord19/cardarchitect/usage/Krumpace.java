@@ -89,6 +89,7 @@ public class Krumpace {
         textNumSmaragd.setFit(fitLeft);
  
         CsvLoader loader = new CsvLoader();
+        loader.addColumn("nazev", textName);
         loader.addColumn("picture", picture);
         loader.addColumn("uhli", textNumUhli);
         loader.addColumn("zelezo", textNumZelezo);
@@ -98,29 +99,28 @@ public class Krumpace {
         loader.addColumn("smaragd", textNumSmaragd);
         loader.load("src/main/resources/karlord19/cardarchitect/usage/krumpace.csv");
 
-        Card card = new Card(4, 4);
+        Card card = new Card(5, 4);
 
         card.add(picture, "picture", 0, 0, 0, 3);
-        card.add(textUhli, "textUhli", 1, 0);
-        card.add(textNumUhli, "pocetUhli", 1, 1);
-        card.add(textZelezo, "textZelezo", 2, 0);
-        card.add(textNumZelezo, "pocetZelezo", 2, 1);
-        card.add(textZlato, "textZlato", 3, 0);
-        card.add(textNumZlato, "pocetZlato", 3, 1);
-        card.add(textRedstone, "textRedstone", 1, 2);
-        card.add(textNumRedstone, "pocetRedstone", 1, 3);
-        card.add(textDiamant, "textDiamant", 2, 2);
-        card.add(textNumDiamant, "pocetDiamant", 2, 3);
-        card.add(textSmaragd, "textSmaragd", 3, 2);
-        card.add(textNumSmaragd, "pocetSmaragd", 3, 3);
+        card.add(textName, "nazev", 1, 0, 1, 3);
+        card.add(textUhli, "textUhli", 2, 0);
+        card.add(textNumUhli, "pocetUhli", 2, 1);
+        card.add(textZelezo, "textZelezo", 3, 0);
+        card.add(textNumZelezo, "pocetZelezo", 3, 1);
+        card.add(textZlato, "textZlato", 4, 0);
+        card.add(textNumZlato, "pocetZlato", 4, 1);
+        card.add(textRedstone, "textRedstone", 2, 2);
+        card.add(textNumRedstone, "pocetRedstone", 2, 3);
+        card.add(textDiamant, "textDiamant", 3, 2);
+        card.add(textNumDiamant, "pocetDiamant", 3, 3);
+        card.add(textSmaragd, "textSmaragd", 4, 2);
+        card.add(textNumSmaragd, "pocetSmaragd", 4, 3);
 
-        int textHight = 6000;
-        card.setHeights(new int[]{60000, textHight, textHight, textHight});
+        int textHight = 8000;
+        card.setHeights(new int[]{60000, textHight, textHight, textHight, textHight});
         card.setWidths(new int[]{25000, 5000, 25000, 5000});
 
-        DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.setHorizontalSpace(5000);
-        deckDrawer.setVerticalSpace(5000);
-        deckDrawer.drawDeck(card, "Krumpace.pdf", 12);
+        DeckDrawer deckDrawer = new DeckDrawer(1000, 5000, 5000, 5000);
+        deckDrawer.drawDeck(card, "Krumpace.pdf", 18);
     }
 }
