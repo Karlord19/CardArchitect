@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class CsvLoader {
     private static final Logger logger = Logger.getLogger(CsvLoader.class.getName());
     private Map<String, AbstractDrawable> columns = new HashMap<String, AbstractDrawable>();
+    private String timesColumn = null;
 
     /**
      * Create a CsvLoader.
@@ -35,6 +36,10 @@ public class CsvLoader {
         columns.put(name, drawable);
     }
 
+    public void addTimesColumn(String name) {
+        timesColumn = name;
+    }
+
     /**
      * Delete a column from the loader.
      * 
@@ -42,7 +47,12 @@ public class CsvLoader {
      * @param name
      */
     public void deleteColumn(String name) {
-        columns.remove(name);
+        if (name.equals(timesColumn)) {
+            timesColumn = null;
+        }
+        else {
+            columns.remove(name);
+        }
     }
 
     /**
@@ -54,8 +64,20 @@ public class CsvLoader {
         try (Reader in = Files.newBufferedReader(Paths.get(file))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
             for (CSVRecord record : records) {
-                for (Map.Entry<String, AbstractDrawable> entry : columns.entrySet()) {
-                    entry.getValue().add(record.get(entry.getKey()));
+                int times = 1;
+                if (timesColumn != null) {
+                    try {
+                        times = Integer.parseInt(record.get(timesColumn));
+                    }
+                    catch (NumberFormatException e) {
+                        logger.warning("Failed to parse times column " + timesColumn + " in file " + file);
+                        continue;
+                    }
+                }
+                for (int i = 0; i < times; i++) {
+                    for (Map.Entry<String, AbstractDrawable> entry : columns.entrySet()) {
+                        entry.getValue().add(record.get(entry.getKey()));
+                    }
                 }
             }
         }

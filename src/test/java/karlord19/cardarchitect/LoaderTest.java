@@ -21,4 +21,21 @@ public class LoaderTest {
         DeckDrawer deckDrawer = new DeckDrawer();
         deckDrawer.drawDeck(card, "Test/Loader.pdf", 6);
     }
+
+    @Test
+    public void timesLoaderTest() {
+        CsvLoader loader = new CsvLoader();
+        Text text = new Text();
+        loader.addColumn("text", text);
+        loader.addTimesColumn("pocet");
+        loader.load("src/test/resources/karlord19/cardarchitect/timesloader.csv");
+
+        Card card = new Card();
+        card.add(text);
+        card.setHeights(new int[]{20000});
+        card.setWidths(new int[]{44444});
+
+        DeckDrawer deckDrawer = new DeckDrawer();
+        deckDrawer.drawDeck(card, "Test/LoaderTimes.pdf", 6);
+    }
 }
