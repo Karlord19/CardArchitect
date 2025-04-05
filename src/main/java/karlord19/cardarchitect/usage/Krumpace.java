@@ -97,6 +97,7 @@ public class Krumpace {
         loader.addColumn("redstone", textNumRedstone);
         loader.addColumn("diamant", textNumDiamant);
         loader.addColumn("smaragd", textNumSmaragd);
+        loader.addTimesColumn("pocet");
         loader.load("src/main/resources/karlord19/cardarchitect/usage/krumpace.csv");
 
         Card card = new Card(5, 4);
@@ -121,6 +122,6 @@ public class Krumpace {
         card.setWidths(new int[]{25000, 5000, 25000, 5000});
 
         DeckDrawer deckDrawer = new DeckDrawer(1000, 5000, 5000, 5000);
-        deckDrawer.drawDeck(card, "Krumpace.pdf", 18);
+        deckDrawer.drawDeck(card, "Krumpace.pdf", 24);
     }
 }

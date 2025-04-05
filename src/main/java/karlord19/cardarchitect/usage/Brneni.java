@@ -56,6 +56,7 @@ public class Brneni {
         loader.addColumn("picture", picture);
         loader.addColumn("typ", textType);
         loader.addColumn("cislo", textNum);
+        loader.addTimesColumn("pocet");
         loader.load("src/main/resources/karlord19/cardarchitect/usage/brneni.csv");
 
         Card card = new Card(3, 3);
@@ -65,13 +66,13 @@ public class Brneni {
         card.add(separator, "sep", 2, 1);
         card.add(textNum, "num", 2, 2);
 
-        int textHight = 5000;
+        int textHight = 4000;
         card.setHeights(new int[]{30000 - 2*textHight, textHight, textHight});
         card.setWidths(new int[]{30000 - 3000 - 11000, 3000, 11000});
 
-        DeckDrawer deckDrawer = new DeckDrawer();
-        deckDrawer.setHorizontalSpace(3000);
-        deckDrawer.setVerticalSpace(3000);
-        deckDrawer.drawDeck(card, "Brneni.pdf", 124);
+        DeckDrawer deckDrawer = new DeckDrawer(3000, 5000, 5000, 5000);
+        deckDrawer.setHorizontalSpace(2000);
+        deckDrawer.setVerticalSpace(2000);
+        deckDrawer.drawDeck(card, "Brneni.pdf", 151);
     }
 }

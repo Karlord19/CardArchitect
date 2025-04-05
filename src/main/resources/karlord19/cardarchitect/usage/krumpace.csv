@@ -1,7 +1,7 @@
-nazev,picture,uhli,zelezo,zlato,redstone,diamant,smaragd
-dřevěný krumpáč,usage/Wooden_Pickaxe_JE3_BE3.webp,3,0,0,0,0,0
-kamenný krumpáč,usage/Stone_Pickaxe_JE2_BE2.webp,4,3,0,0,0,0
-železný krumpáč,usage/Iron_Pickaxe_JE3_BE2.webp,5,4,3,0,0,0
-zlatý krumpáč,usage/Golden_Pickaxe_JE4_BE3.webp,4,3,4,3,0,0
-diamantový krumpáč,usage/Diamond_Pickaxe_JE3_BE3.webp,4,5,3,4,3,0
-netheritový krumpáč,usage/Netherite_Pickaxe_JE3.webp,5,4,3,5,4,3
+nazev,picture,uhli,zelezo,zlato,redstone,diamant,smaragd,pocet
+dřevěný krumpáč,usage/Wooden_Pickaxe_JE3_BE3.webp,3,0,0,0,0,0,4
+kamenný krumpáč,usage/Stone_Pickaxe_JE2_BE2.webp,4,3,0,0,0,0,4
+železný krumpáč,usage/Iron_Pickaxe_JE3_BE2.webp,5,4,3,0,0,0,4
+zlatý krumpáč,usage/Golden_Pickaxe_JE4_BE3.webp,4,3,4,3,0,0,4
+diamantový krumpáč,usage/Diamond_Pickaxe_JE3_BE3.webp,4,5,3,4,3,0,4
+netheritový krumpáč,usage/Netherite_Pickaxe_JE3.webp,5,4,3,5,4,3,4
