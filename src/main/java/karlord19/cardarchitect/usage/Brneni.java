@@ -72,6 +72,6 @@ public class Brneni {
         DeckDrawer deckDrawer = new DeckDrawer();
         deckDrawer.setHorizontalSpace(3000);
         deckDrawer.setVerticalSpace(3000);
-        deckDrawer.drawDeck(card, "Brneni.pdf", 27);
+        deckDrawer.drawDeck(card, "Brneni.pdf", 124);
     }
 }
