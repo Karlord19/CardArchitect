@@ -58,7 +58,7 @@ public class DeckDrawer {
         if (space == null) {
             return (int)((double) pageSize / cardSize);
         }
-        return (int)((double) pageSize / (cardSize + space));
+        return (int) Math.floor((double) (pageSize + space) / (cardSize + space));
     }
     private static int spaceInLine(Integer space, int cardSize, int pageSize, int cardsInLine) {
         if (space == null) {
