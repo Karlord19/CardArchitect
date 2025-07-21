@@ -8,7 +8,7 @@ import java.io.File;
 public class Jidla {
     public static void main(String[] args) {
         
-        int statsFontSize = 10;
+        int statsFontSize = 14;
         PDType0Font font;
         try {
             PDDocument document = new PDDocument();
@@ -43,7 +43,7 @@ public class Jidla {
         textDifficulty.setFit(fitRight);
 
         Fit fitPicture = new Fit();
-        fitPicture.setFitType(Fit.FitType.SCALE);
+        fitPicture.setFitType(Fit.FitType.FIT_WIDTH);
         Picture picture = new Picture();
         picture.setFit(fitPicture);
 
@@ -57,18 +57,17 @@ public class Jidla {
         loader.load("src/main/resources/karlord19/cardarchitect/usage/-karticky.csv");
 
         Card card = new Card(4, 2);
-        card.add(picture, "obrazek", 0, 0, 0, 1);
-        card.add(textName, "nazev", 1, 0, 3, 0);
-        card.add(textCost, "cena", 1, 1);
-        card.add(textOrigin, "puvod", 2, 1);
-        card.add(textDifficulty, "obtiznost", 3, 1);
+        card.add(picture, "obrazek", 0, 0, 2, 0);
+        card.add(textName, "nazev", 3, 0, 3, 1);
+        card.add(textCost, "cena", 2, 1);
+        card.add(textOrigin, "puvod", 1, 1);
+        card.add(textDifficulty, "obtiznost", 0, 1);
 
-        LineStyle blue = new LineStyle(500, 0, 0, 1);
-        card.addBorderAround("nazev", blue);
-
-        int rowHeight = 6000;
-        card.setHeights(new int[]{39400 - 3*rowHeight, rowHeight, rowHeight, rowHeight});
-        card.setWidths(new int[]{42400 - 2*rowHeight, 2*rowHeight});
+        int charWidth = 8000;
+        int height = 47400;
+        int width = 42400;
+        card.setHeights(new int[]{height/2/3, height/2/3, height/2/3, height/2});
+        card.setWidths(new int[]{width - charWidth, charWidth});
 
         DeckDrawer deckDrawer = new DeckDrawer(5000, 5000, 5000, 5000);
         deckDrawer.setHorizontalSpace(10000);
