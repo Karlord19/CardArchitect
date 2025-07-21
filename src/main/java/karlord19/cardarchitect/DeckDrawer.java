@@ -114,6 +114,8 @@ public class DeckDrawer {
         int cardsInColumn = cardsInLine(verticalSpace, cardHeight, pdf.getPrintPA().area.height);
         int rowSpace = spaceInLine(horizontalSpace, cardWidth, pdf.getPrintPA().area.width, cardsInRow);
         int columnSpace = spaceInLine(verticalSpace, cardHeight, pdf.getPrintPA().area.height, cardsInColumn);
+        logger.info("PRINT PA: " + pdf.getPrintPA());
+        logger.info("Card size: " + cardWidth + "x" + cardHeight + " mim2");
         logger.info("Deck drawer will draw " + cardsInRow + " cards in row and " + cardsInColumn + " cards in column.");
         logger.info("Deck drawer will will leave " + rowSpace + " mim horizontaly and " + columnSpace + " mim verticaly between cards.");
         
