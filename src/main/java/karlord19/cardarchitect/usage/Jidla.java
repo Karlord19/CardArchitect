@@ -8,39 +8,35 @@ import java.io.File;
 public class Jidla {
     public static void main(String[] args) {
         
-        int statsFontSize = 14;
+        int statsFontSize = 22;
         PDType0Font font;
         try {
             PDDocument document = new PDDocument();
-            font = PDType0Font.load(document, new File("src/main/resources/karlord19/cardarchitect/usage/LiberationSans-Regular.ttf"));
+            font = PDType0Font.load(document, new File("src/main/resources/karlord19/cardarchitect/usage/Dynalight-Regular.ttf"));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        Fit fitLeft = new Fit();
-        fitLeft.setFitPositionX(Fit.FitPositionX.LEFT);
-        fitLeft.setFitPositionY(Fit.FitPositionY.CENTER);
+        Fit fitCenter = new Fit();
+        fitCenter.setFitPositionX(Fit.FitPositionX.CENTER);
+        fitCenter.setFitPositionY(Fit.FitPositionY.CENTER);
 
         WrapText textName = new WrapText();
         textName.setFont(font, statsFontSize);
-        textName.setFit(fitLeft);
-        
-        Fit fitRight = new Fit();
-        fitRight.setFitPositionX(Fit.FitPositionX.RIGHT);
-        fitRight.setFitPositionY(Fit.FitPositionY.CENTER);
+        textName.setFit(fitCenter);
         
         MultilineText textCost = new MultilineText();
         textCost.setFont(font, statsFontSize);
-        textCost.setFit(fitRight);
+        textCost.setFit(fitCenter);
 
         MultilineText textOrigin = new MultilineText();
         textOrigin.setFont(font, statsFontSize);
-        textOrigin.setFit(fitRight);
-        
+        textOrigin.setFit(fitCenter);
+
         MultilineText textDifficulty = new MultilineText();
         textDifficulty.setFont(font, statsFontSize);
-        textDifficulty.setFit(fitRight);
+        textDifficulty.setFit(fitCenter);
 
         Fit fitPicture = new Fit();
         fitPicture.setFitType(Fit.FitType.FIT_WIDTH);
@@ -69,9 +65,18 @@ public class Jidla {
         card.setHeights(new int[]{height/2/3, height/2/3, height/2/3, height/2});
         card.setWidths(new int[]{width - charWidth, charWidth});
 
+        Card background = new Card();
+        Picture picBack = new Picture("usage/pozadi.png");
+        Fit fitStretch = new Fit();
+        fitStretch.setFitType(Fit.FitType.STRETCH);
+        picBack.setFit(fitStretch);
+        background.add(picBack);
+        background.setWidthsEqual(width);
+        background.setHeightsEqual(height);
+
         DeckDrawer deckDrawer = new DeckDrawer(5000, 5000, 5000, 5000);
         deckDrawer.setHorizontalSpace(10000);
         deckDrawer.setVerticalSpace(10000);
-        deckDrawer.drawDeck(card, "jidla.pdf", 38);
+        deckDrawer.drawDeck(new Card[]{background, card}, "jidla.pdf", 38);
     }
 }
