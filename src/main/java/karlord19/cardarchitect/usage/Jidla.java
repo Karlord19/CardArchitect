@@ -76,7 +76,7 @@ public class Jidla {
 
         DeckDrawer deckDrawer = new DeckDrawer(5000, 5000, 5000, 5000);
         deckDrawer.setHorizontalSpace(10000);
-        deckDrawer.setVerticalSpace(10000);
-        deckDrawer.drawDeck(new Card[]{background, card}, "jidla.pdf", 38);
+        deckDrawer.setVerticalSpace(11000);
+        deckDrawer.drawDeck(new Card[]{background, card}, "jidla.pdf", 36*8);
     }
 }
