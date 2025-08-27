@@ -8,11 +8,12 @@ import java.io.File;
 public class Kadeni {
     public static void main(String[] args) {
         
-        int statsFontSize = 15;
+        int statsFontSize = 12;
+        int nahoreFontSize = 16;
         PDType0Font font;
         try {
             PDDocument document = new PDDocument();
-            font = PDType0Font.load(document, new File("src/main/resources/karlord19/cardarchitect/usage/rexlia free.ttf"));
+            font = PDType0Font.load(document, new File("src/main/resources/karlord19/cardarchitect/usage/NotoSans-VariableFont_wdth,wght.ttf"));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -23,11 +24,11 @@ public class Kadeni {
         fitCenter.setFitPositionY(Fit.FitPositionY.CENTER);
 
         MultilineText textForce = new MultilineText();
-        textForce.setFont(font, statsFontSize);
+        textForce.setFont(font, nahoreFontSize);
         textForce.setFit(fitCenter);
 
         WrapText textName = new WrapText();
-        textName.setFont(font, statsFontSize);
+        textName.setFont(font, nahoreFontSize);
         textName.setFit(fitCenter);        
         
         Fit fitPicture = new Fit();
@@ -54,14 +55,14 @@ public class Kadeni {
         card.add(textDesc, "popis", 2, 0, 2, 1);
 
         int charWidth = 8000;
-        int height = 60000;
+        // int height = 63000;
         int width = 42400;
-        card.setHeights(new int[]{height/6, height/2, height/3});
+        card.setHeights(new int[]{13000, 30000, 20000});
         card.setWidths(new int[]{charWidth, width - charWidth});
 
         DeckDrawer deckDrawer = new DeckDrawer(5000, 5000, 5000, 5000);
         deckDrawer.setHorizontalSpace(10000);
         deckDrawer.setVerticalSpace(10000);
-        deckDrawer.drawDeck(card, "kadeni.pdf", 10);
+        deckDrawer.drawDeck(card, "kadeni.pdf", 7*21+60);
     }
 }

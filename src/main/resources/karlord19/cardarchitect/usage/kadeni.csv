@@ -1,2 +1,11 @@
 sila,nazev,obrazek,popis,pocet
-4,kamarádka na čůrání,usage/f_112.jpg,hello im prujem a mel bych byt automaticky zalomeny,3
+1,Úchyl,usage/uchyl.png,Prohodí dva lidi před ním,12
+2,Kamarádka na čůrání,usage/kamaradka_na_curani.jpg,Předběhne jednoho člověka,36
+3,Zácpa,usage/zacpa.png,Nejde předběhnout průjmem,12
+4,Kamarádka na sraní,usage/kamaradka_na_srani.jpg,Předběhne dva lidi,21
+5,Prdění,usage/prdeni.png,Vyhodí libovolného jednoho člověka z fronty,21
+6,Poseroutka,usage/poseroutka.png,S příchodem dalšího poseroutky v tomto pořadí všechny předběhnou,21
+7,Uklízečka,usage/uklizecka.png,Uspořádá frontu podle síly,21
+8,Průjem,usage/prujem.png,Předběhne všechny až po zácpu,21
+9,Zácpa++,usage/zacpa++.png,Nejde předběhnout průjmem ani kamarádkami ani úchylem,21
+10,Zvracení,usage/zvraceni.png,Otočí pořadí lidí před sebou,21
